@@ -1,6 +1,12 @@
 #include <iostream>
+#include "Graph.h"
+#include "NodeRecord.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    
+}
+
+void pathfindDijkstra() {
+
 }
