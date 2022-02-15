@@ -6,6 +6,16 @@ public:
 	Connection();
 	~Connection();
 
+	float getCost() {
+
+	}
+	NodeRecord getFromNode() {
+
+	}
+	NodeRecord getToNode() {
+
+	}
+
 private:
 
 };

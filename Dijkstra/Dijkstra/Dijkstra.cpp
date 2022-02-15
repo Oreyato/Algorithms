@@ -1,6 +1,5 @@
 #include <iostream>
-#include "Connection.h"
-//
+#include "NodeRecord.h"
 
 int main()
 {
@@ -20,18 +19,9 @@ int main()
 	//^ ==============================================================
 }
 
-
 // The parameters will change to this, later on:
 // [array] pathfindDijkstra(int graph[7][7], int startNode, int endNode)
 void pathfindDijkstra(int graph[7][7], int startNode, int endNode) {
-	// Initialize structure
-	struct NodeRecord
-	{
-		int node;
-		Connection connection;
-		float costSoFar;
-	};
-
 	// Initialise the record for the start node
 	NodeRecord startRecord = NodeRecord();
 	startRecord.node = startNode;
