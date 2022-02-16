@@ -1,28 +1,9 @@
 #include <iostream>
 #include "PathfindingList.h"
 #include "Connection.h"
+#include <string>
 
-int main()
-{
-	//v Graph initialization =========================================
-	// Create a big number to simulate an impossible path
-	float bNum = 10000.0f;
-	float graph[7][7] = {
-		// A,		B,		C,		D,		E,		F,		G
-		{  0.f,		15.f,	22.f,	bNum,	bNum,	bNum,	bNum},	// A
-		{  15.f,	0.f,	bNum,	20.f,	18.f,	bNum,	bNum},	// B
-		{  22.f,	bNum,	0.f,	16.f,	bNum,	42.f,	bNum},	// C
-		{  bNum,	20.f,	16.f,	0.f,	bNum,	bNum,	bNum},	// D
-		{  bNum,	18.f,	5.f,	bNum,	0.f,	15.f,	25.f},	// E
-		{  bNum,	bNum,	42.f,	bNum,	15.f,	0.f,	10.f},	// F
-		{  bNum,	bNum,	bNum,	bNum,	25.f,	10.f,	0.f}	// G
-	};
-	//^ ==============================================================
-}
-
-// The parameters will change to this, later on:
-// [array] pathfindDijkstra(int graph[7][7], int startNode, int endNode)
-void pathfindDijkstra(int graph[7][7], int startNode, int endNode) {
+std::string pathfindDijkstra(float graph[7][7], int startNode, int endNode) {
 	// Initialise the record for the start node
 	NodeRecord startRecord = NodeRecord();
 	startRecord.node = startNode;
@@ -51,7 +32,7 @@ void pathfindDijkstra(int graph[7][7], int startNode, int endNode) {
 		//std::vector<Connection> connections = graph.getConnections(current);
 
 		// Loop through each connection in turn
-		//for each (connection in connections)
+		//for (Connection connection : connections)
 		//{
 			//Get the cost estimate for the end node
 			//endNode = connection.getToNode();
@@ -89,4 +70,48 @@ void pathfindDijkstra(int graph[7][7], int startNode, int endNode) {
 		open.remove(current);
 		closed.add(current);
 	}
+
+	// At this point we either found the goal or, 
+	// if we've no more nodes to search, find which
+	//if (current.node != endNode) {
+		// We have run out of nodes without finding the goal, so there's no solution
+		//return "There's no path";
+	//}
+	/*
+	else {
+		// Compile the list of connections in the path
+		int path = [];
+
+		// Work back along the path, accumulating connections
+		while (current.node != startNode) {
+			path += current.connection;
+			current = current.connection.getFromNode();
+		}
+
+		// Reverse the path and return it
+		return reverse(path);
+	}
+	*/
+
+	return "Temp";
+}
+
+int main()
+{
+	//v Graph initialization =========================================
+	// Create a big number to simulate an impossible path
+	float bNum = 10000.0f;
+	float graph[7][7] = {
+		// A,		B,		C,		D,		E,		F,		G
+		{  0.f,		15.f,	22.f,	bNum,	bNum,	bNum,	bNum},	// A
+		{  15.f,	0.f,	bNum,	20.f,	18.f,	bNum,	bNum},	// B
+		{  22.f,	bNum,	0.f,	16.f,	bNum,	42.f,	bNum},	// C
+		{  bNum,	20.f,	16.f,	0.f,	bNum,	bNum,	bNum},	// D
+		{  bNum,	18.f,	5.f,	bNum,	0.f,	15.f,	25.f},	// E
+		{  bNum,	bNum,	42.f,	bNum,	15.f,	0.f,	10.f},	// F
+		{  bNum,	bNum,	bNum,	bNum,	25.f,	10.f,	0.f}	// G
+	};
+	//^ ==============================================================
+
+	pathfindDijkstra(graph, 0, 5);
 }

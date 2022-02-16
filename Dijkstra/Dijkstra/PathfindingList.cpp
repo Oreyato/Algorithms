@@ -12,11 +12,14 @@ PathfindingList::~PathfindingList()
 void PathfindingList::add(NodeRecord nodeP)
 {
 	length++;
+	nodes.push_back(nodeP);
 }
 
 void PathfindingList::remove(NodeRecord nodeP)
 {
 	length--;
+	std::vector<NodeRecord>::iterator it = std::find(nodes.begin(), nodes.end(), nodeP);
+	nodes.erase(it);
 }
 
 NodeRecord PathfindingList::getSmallestElement()
