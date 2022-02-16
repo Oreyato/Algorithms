@@ -1,5 +1,6 @@
 #pragma once
 #include "NodeRecord.h"
+#include <vector>
 
 class PathfindingList
 {
@@ -13,32 +14,10 @@ public:
 	NodeRecord getSmallestElement();
 	bool isContained();
 
+	std::vector<NodeRecord> getList() { return nodes; }
+	int getLength() { return length; }
+
 private:
-
+	std::vector<NodeRecord> nodes;
+	int length;
 };
-
-PathfindingList::PathfindingList()
-{
-}
-
-PathfindingList::~PathfindingList()
-{
-}
-
-inline void PathfindingList::add(NodeRecord nodeP)
-{
-}
-
-inline void PathfindingList::remove(NodeRecord nodeP)
-{
-}
-
-inline NodeRecord PathfindingList::getSmallestElement()
-{
-	return NodeRecord();
-}
-
-inline bool PathfindingList::isContained()
-{
-	return false;
-}

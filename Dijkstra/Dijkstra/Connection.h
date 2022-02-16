@@ -1,5 +1,7 @@
 #pragma once
 
+class NodeRecord;
+
 class Connection
 {
 public:
@@ -9,21 +11,10 @@ public:
 	float getCost() {
 
 	}
-	NodeRecord getFromNode() {
-
-	}
-	NodeRecord getToNode() {
-
-	}
+	NodeRecord getFromNode();
+	NodeRecord getToNode();
 
 private:
 
 };
 
-Connection::Connection()
-{
-}
-
-Connection::~Connection()
-{
-}
