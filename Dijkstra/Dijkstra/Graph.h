@@ -14,6 +14,7 @@ public:
 
 private:
 	std::vector<Connection> connections;
-	std::vector<std::string> nodesNames;
+	//std::vector<std::string> nodesNames;
+	std::string nodesNames[7];
 };
 

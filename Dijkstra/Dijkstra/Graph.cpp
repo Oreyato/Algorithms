@@ -6,9 +6,20 @@ Graph::Graph()
 	//v Graph initialization =========================================
 	// Create a big number to simulate an impossible path
 	float bNum = 10000.0f;
+	
 	// Initialize graph size
 	const int row = 7;
 	const int column = 7;
+	
+	// Initialize nodes names
+	std::string tmpNames[7]{ "A", "B", "C", "D", "E", "F", "G"};
+	nodesNames->resize(7);
+	const int nodesNamesSize = nodesNames->size();
+
+	for (size_t i = 0; i < nodesNamesSize; i++)
+	{
+		nodesNames[i] = tmpNames[i];
+	}
 
 	float graph[row][column] = {
 		// A,		B,		C,		D,		E,		F,		G
@@ -41,8 +52,9 @@ const void Graph::displayConnections() const
 {
 	std::cout << "[==========] Connections [==========]" << std::endl;
 	for (size_t i = 0; i < connections.size(); i++)	{
-		std::cout << connections[i].getFromNode() << " -> " << connections[i].getToNode() << " : " << connections[i].getCost() << std::endl;
+		int fromNode = connections[i].getFromNode();
+		int toNode = connections[i].getToNode();
+		std::cout << nodesNames[fromNode] << "\t->\t" << nodesNames[toNode] << "\t:\t" << connections[i].getCost() << std::endl;
 	}
-
 	std::cout << "[===================================]" << std::endl;
 }
