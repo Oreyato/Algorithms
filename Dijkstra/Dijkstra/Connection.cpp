@@ -1,9 +1,16 @@
 #include "Connection.h"
 
 Connection::Connection() :
-	cost(0),
 	fromNode(0),
-	toNode(0)
+	toNode(0),
+	cost(0.0f)
+{
+}
+
+Connection::Connection(int fromNodeP, int toNodeP, float costP) :
+	fromNode(fromNodeP),
+	toNode(toNodeP),
+	cost(costP)
 {
 }
 

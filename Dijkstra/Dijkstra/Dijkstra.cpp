@@ -1,9 +1,7 @@
-#include <iostream>
 #include "PathfindingList.h"
-#include "Connection.h"
-#include <string>
+#include "Graph.h"
 
-std::string pathfindDijkstra(float graph[7][7], int startNode, int endNode) {
+std::string pathfindDijkstra(Graph graph, int startNode, int endNode) {
 	// Initialise the record for the start node
 	NodeRecord startRecord = NodeRecord();
 	startRecord.node = startNode;
@@ -98,20 +96,8 @@ std::string pathfindDijkstra(float graph[7][7], int startNode, int endNode) {
 
 int main()
 {
-	//v Graph initialization =========================================
-	// Create a big number to simulate an impossible path
-	float bNum = 10000.0f;
-	float graph[7][7] = {
-		// A,		B,		C,		D,		E,		F,		G
-		{  0.f,		15.f,	22.f,	bNum,	bNum,	bNum,	bNum},	// A
-		{  15.f,	0.f,	bNum,	20.f,	18.f,	bNum,	bNum},	// B
-		{  22.f,	bNum,	0.f,	16.f,	bNum,	42.f,	bNum},	// C
-		{  bNum,	20.f,	16.f,	0.f,	bNum,	bNum,	bNum},	// D
-		{  bNum,	18.f,	5.f,	bNum,	0.f,	15.f,	25.f},	// E
-		{  bNum,	bNum,	42.f,	bNum,	15.f,	0.f,	10.f},	// F
-		{  bNum,	bNum,	bNum,	bNum,	25.f,	10.f,	0.f}	// G
-	};
-	//^ ==============================================================
+	Graph graph = Graph();
+	graph.displayConnections();
 
 	pathfindDijkstra(graph, 0, 5);
 }

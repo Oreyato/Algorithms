@@ -4,15 +4,16 @@ class Connection
 {
 public:
 	Connection();
+	Connection(int fromNodeP, int toNodeP, float costP);
 	~Connection();
 
-	const float getCost() const { return cost; }
 	const int getFromNode() const { return fromNode; }
 	const int getToNode() const { return toNode; }
+	const float getCost() const { return cost; }
 
 private:
-	float cost;
 	int fromNode;
 	int toNode;
+	float cost;
 };
 
