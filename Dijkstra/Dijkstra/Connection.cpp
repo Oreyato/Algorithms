@@ -1,20 +1,12 @@
 #include "Connection.h"
-#include "NodeRecord.h"
 
-Connection::Connection()
+Connection::Connection() :
+	cost(0),
+	fromNode(0),
+	toNode(0)
 {
 }
 
 Connection::~Connection()
 {
-}
-
-NodeRecord Connection::getFromNode()
-{
-	return NodeRecord();
-}
-
-NodeRecord Connection::getToNode()
-{
-	return NodeRecord();
 }

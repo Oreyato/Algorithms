@@ -21,10 +21,51 @@ void PathfindingList::remove(NodeRecord nodeP)
 
 NodeRecord PathfindingList::getSmallestElement()
 {
-	return NodeRecord();
+	// Use the first node.costSoFar as reference
+	int min = nodes[0].costSoFar;
+	int storedNode = 0;
+
+	// Iterate through list of nodes, skipping the first one ^
+	for (int i = 1; i < length; i++)
+	{
+		if (nodes[i].costSoFar < min) {
+			min = nodes[i].costSoFar;
+			storedNode = i;
+		}
+	}
+
+	return nodes[storedNode];
 }
 
-bool PathfindingList::isContained()
+const bool PathfindingList::contains(int nodeP) const
 {
-	return false;
+	bool isContained = false;
+
+	// Iterate through list of nodes
+	for (size_t i = 0; i < length; i++)
+	{
+		// Is the current node of the list the same as the one we are looking for
+		if (nodes[i].node == nodeP) {
+			isContained = true;
+			break;
+		}
+	}
+
+	return isContained;
+}
+
+const NodeRecord PathfindingList::find(int nodeP) const
+{
+	int storedNode = 0;
+
+	// Iterate through list of nodes
+	for (int i = 0; i < length; i++)
+	{
+		if (nodes[i].node == nodeP) {
+			storedNode = i;
+			break;
+		}
+	}
+
+	return nodes[storedNode];
 }

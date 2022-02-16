@@ -12,7 +12,8 @@ public:
 	void remove(NodeRecord nodeP);
 
 	NodeRecord getSmallestElement();
-	bool isContained();
+	const bool contains(int nodeP) const;
+	const NodeRecord find(int nodeP) const;
 
 	std::vector<NodeRecord> getList() { return nodes; }
 	int getLength() { return length; }
