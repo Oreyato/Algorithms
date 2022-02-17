@@ -1,5 +1,6 @@
 #pragma once
 #include "Connection.h"
+#include "NodeRecord.h"
 #include <vector>
 #include <string>
 
@@ -9,12 +10,12 @@ public:
 	Graph();
 	~Graph();
 
-	const std::vector<Connection> getConnections() const { return connections; }
+	const std::string* getNodesNames() { return nodesNames; }
+	const std::vector<Connection> getConnections(NodeRecord nodeP) const;
 	const void displayConnections() const;
 
 private:
 	std::vector<Connection> connections;
-	//std::vector<std::string> nodesNames;
 	std::string nodesNames[7];
 };
 

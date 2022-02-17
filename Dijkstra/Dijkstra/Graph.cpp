@@ -13,10 +13,11 @@ Graph::Graph()
 	
 	// Initialize nodes names
 	std::string tmpNames[7]{ "A", "B", "C", "D", "E", "F", "G"};
+	
 	nodesNames->resize(7);
 	const int nodesNamesSize = nodesNames->size();
 
-	for (size_t i = 0; i < nodesNamesSize; i++)
+	for (int i = 0; i < nodesNamesSize; i++)
 	{
 		nodesNames[i] = tmpNames[i];
 	}
@@ -33,9 +34,9 @@ Graph::Graph()
 	};
 	//^ ==============================================================
 
-	for (size_t i = 0; i < row; i++)
+	for (int i = 0; i < row; i++)
 	{
-		for (size_t j = 0; j < column; j++) {
+		for (int j = 0; j < column; j++) {
 			if ((graph[i][j] != bNum) && (graph[i][j] != 0)) {
 				Connection connection = Connection(i, j, graph[i][j]);
 				connections.push_back(connection);
@@ -48,10 +49,25 @@ Graph::~Graph()
 {
 }
 
+const std::vector<Connection> Graph::getConnections(NodeRecord nodeP) const
+{
+	std::vector<Connection> nodeConnections;
+	int fromNode = nodeP.node;
+
+	for (int i = 0; i < connections.size(); i++)
+	{
+		if (connections[i].getFromNode() == fromNode) {
+			nodeConnections.push_back(connections[i]);
+		}
+	}
+
+	return nodeConnections;
+}
+
 const void Graph::displayConnections() const
 {
 	std::cout << "[==========] Connections [==========]" << std::endl;
-	for (size_t i = 0; i < connections.size(); i++)	{
+	for (int i = 0; i < connections.size(); i++)	{
 		int fromNode = connections[i].getFromNode();
 		int toNode = connections[i].getToNode();
 		std::cout << nodesNames[fromNode] << "\t->\t" << nodesNames[toNode] << "\t:\t" << connections[i].getCost() << std::endl;

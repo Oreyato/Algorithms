@@ -28,7 +28,7 @@ NodeRecord PathfindingList::getSmallestElement()
 	int min = nodes[0].costSoFar;
 	int storedNode = 0;
 
-	// Iterate through list of nodes, skipping the first one ^
+	// Iterate through list of nodes, skipping the first one because it already is the reference
 	for (int i = 1; i < length; i++)
 	{
 		if (nodes[i].costSoFar < min) {
@@ -45,7 +45,7 @@ const bool PathfindingList::contains(int nodeP) const
 	bool isContained = false;
 
 	// Iterate through list of nodes
-	for (size_t i = 0; i < length; i++)
+	for (int i = 0; i < length; i++)
 	{
 		// Is the current node of the list the same as the one we are looking for
 		if (nodes[i].node == nodeP) {
