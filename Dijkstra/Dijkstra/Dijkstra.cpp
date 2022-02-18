@@ -36,7 +36,7 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int goalNo
 		for (Connection connection : connections)
 		{
 			//Get the cost estimate for the end node
-			endRecord.costSoFar = connection.getToNode();
+			endRecord.node = connection.getToNode();
 			float endNodeCost = current.costSoFar + connection.getCost();
 			
 			// Skip if the node is closed
@@ -51,8 +51,8 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int goalNo
 			}
 			// Otherwise we know we've got an unvisited node, so make a record for it
 			else {
-				NodeRecord* endRecord = new NodeRecord();
-				endRecord->node = current.node;
+				NodeRecord endRecord = NodeRecord();
+				endRecord.node = current.node;
 			}
 
 			// At this point we need to update the node
@@ -88,6 +88,8 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int goalNo
 			nodesPath.push_back(current.node);
 			current = closed.find(current.connection.getFromNode());
 		}
+		// Adding the startNode
+		nodesPath.push_back(current.node);
 
 		// Reverse the path
 		std::reverse(nodesPath.begin(), nodesPath.end());
@@ -105,22 +107,28 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int goalNo
 	}
 }
 
+void coutPath(std::vector<std::string> pathP) {
+	std::cout << std::endl;
+	std::cout << "[==============] Path [=============]" << std::endl;
+	if (pathP.size() > 0)
+	{
+		for (auto i = 0; i < pathP.size() - 1; i++)
+		{
+			std::cout << pathP[i] << " -> ";
+		}
+		std::cout << pathP[pathP.size() - 1] << std::endl;
+	}
+	else {
+		std::cout << "There is no path" << std::endl;
+	}
+	std::cout << "[===================================]" << std::endl;
+}
+
 int main()
 {
 	Graph graph = Graph();
 	graph.displayConnections();
 
 	std::vector<std::string> path = pathfindDijkstra(graph, 0, 5);
-
-	if (path.size() > 0)
-	{
-		for (auto i = 0; i < path.size() - 1; i++)
-		{
-			std::cout << path[i] << " -> ";
-		}
-		//std::cout << path[path.size()];
-	}
-	else {
-		std::cout << "There is no path" << std::endl;
-	}
+	coutPath(path);
 }
