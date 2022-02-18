@@ -2,11 +2,11 @@
 #include "PathfindingList.h"
 #include "Graph.h"
 
-std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int endNode) {
+std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int goalNode) {
 	// Initialise the record for the start node
 	NodeRecord startRecord = NodeRecord();
 	startRecord.node = startNode;
-	// startRecord.connection = ;
+	startRecord.connection = {};
 	startRecord.costSoFar = 0;
 
 	// Initialize the current node
@@ -14,7 +14,6 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int endNod
 
 	// Initialise the record for the end node
 	NodeRecord endRecord = NodeRecord();
-	endRecord.node = endNode;
 
 	// Initialise the open and closed lists
 	PathfindingList open;
@@ -28,7 +27,7 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int endNod
 		current = open.getSmallestElement();
 
 		// If it is the goal node, then terminate
-		if (current.node == endNode) break;
+		if (current.node == goalNode) break;
 
 		// Otherwise, get its outgoing connections
 		std::vector<Connection> connections = graph.getConnections(current);
@@ -41,19 +40,19 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int endNod
 			float endNodeCost = current.costSoFar + connection.getCost();
 			
 			// Skip if the node is closed
-			if (closed.contains(endNode)) {
+			if (closed.contains(endRecord.node)) {
 				continue;
 			}
 			// ... or if it is open and we have found a worse route
-			else if (open.contains(endNode)) {
+			else if (open.contains(endRecord.node)) {
 				// Here we find the record in the open list corresponding to the endNode
-				endRecord = open.find(endNode);
-				//if (endRecord.costSoFar <= endNodeCost) continue;
+				endRecord = open.find(endRecord.node);
+				if (endRecord.costSoFar <= endNodeCost) continue;
 			}
 			// Otherwise we know we've got an unvisited node, so make a record for it
 			else {
 				NodeRecord* endRecord = new NodeRecord();
-				endRecord->node = endNode;
+				endRecord->node = current.node;
 			}
 
 			// At this point we need to update the node
@@ -62,7 +61,7 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int endNod
 			endRecord.connection = connection;
 
 			// And add it to the open list
-			if (!open.contains(endNode)) {
+			if (!open.contains(endRecord.node)) {
 				open.add(endRecord);
 			}
 		}
@@ -75,7 +74,7 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int endNod
 
 	// At this point we either found the goal or, 
 	// if we've no more nodes to search, find which
-	if (current.node != endNode) {
+	if (current.node != goalNode) {
 		// We have run out of nodes without finding the goal, so there's no solution
 		std::vector<std::string> noPath;
 		return noPath;
