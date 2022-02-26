@@ -14,18 +14,23 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int goalNo
 
 	// Initialise the record for the end node
 	NodeRecord endRecord = NodeRecord();
+	float endNodeCost = 0;
 
 	// Initialise the open and closed lists
 	PathfindingList open;
 	open.add(startRecord);
 	PathfindingList closed;
 
+	// Algo outputs header
+	std::cout << std::endl;
+	std::cout << "[========] Processing Algo [========]" << std::endl;
+
 	// Iterate through processing each node
 	while (open.getLength() > 0)
 	{
 		// Find the smallest element in the open list
-
 		current = open.getSmallestElement();
+		std::cout << "Current node: " << current.node << std::endl;
 
 		// If it is the goal node, then terminate
 		if (current.node == goalNode) break;
@@ -36,24 +41,30 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int goalNo
 		// Loop through each connection in turn
 		for (Connection connection : connections)
 		{
+			std::cout << "Current connection: " << connection.getFromNode() << " -> " << connection.getToNode() << " | " << connection.getCost() << std::endl;
+
 			//Get the cost estimate for the end node
 			endRecord.node = connection.getToNode();
-			float endNodeCost = current.costSoFar + connection.getCost();
+			endNodeCost = current.costSoFar + connection.getCost();
 			
 			// Skip if the node is closed
 			if (closed.contains(endRecord.node)) {
 				continue;
 			}
 			// ... or if it is open and we have found a worse route
+			// MUCH PROBABLY AN ISSUE HERE ============
 			else if (open.contains(endRecord.node)) {
 				// Here we find the record in the open list corresponding to the endNode
 				endRecord = open.find(endRecord.node);
 				if (endRecord.costSoFar <= endNodeCost) continue;
 			}
+			// =========================================
 			// Otherwise we know we've got an unvisited node, so make a record for it
 			else {
 				NodeRecord endRecord = NodeRecord();
 				endRecord.node = current.node;
+				//endRecord.connection = connection;
+				//endRecord.costSoFar = endNodeCost;
 			}
 
 			// At this point we need to update the node
@@ -102,6 +113,7 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int goalNo
 		{
 			pathWithNames.push_back(names[nodesPath[i]]);
 		}
+		std::cout << "[===================================]" << std::endl;
 
 		// Return it
 		return pathWithNames;
@@ -130,6 +142,6 @@ int main()
 	Graph graph = Graph();
 	graph.displayConnections();
 
-	std::vector<std::string> path = pathfindDijkstra(graph, 0, 6);
+	std::vector<std::string> path = pathfindDijkstra(graph, 0, 5);
 	coutPath(path);
 }
