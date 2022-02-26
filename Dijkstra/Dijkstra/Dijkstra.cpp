@@ -24,6 +24,7 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int goalNo
 	while (open.getLength() > 0)
 	{
 		// Find the smallest element in the open list
+
 		current = open.getSmallestElement();
 
 		// If it is the goal node, then terminate
@@ -109,7 +110,7 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int goalNo
 
 void coutPath(std::vector<std::string> pathP) {
 	std::cout << std::endl;
-	std::cout << "[==============] Path [=============]" << std::endl;
+	std::cout << "[=============] Path [==============]" << std::endl;
 	if (pathP.size() > 0)
 	{
 		for (auto i = 0; i < pathP.size() - 1; i++)
@@ -129,6 +130,6 @@ int main()
 	Graph graph = Graph();
 	graph.displayConnections();
 
-	std::vector<std::string> path = pathfindDijkstra(graph, 0, 5);
+	std::vector<std::string> path = pathfindDijkstra(graph, 0, 6);
 	coutPath(path);
 }
