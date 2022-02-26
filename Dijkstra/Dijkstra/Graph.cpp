@@ -34,15 +34,18 @@ Graph::Graph()
 	};
 	//^ ==============================================================
 
+	//v Connections initialization ===================================
 	for (int i = 0; i < row; i++)
 	{
 		for (int j = 0; j < column; j++) {
-			if ((graph[i][j] != bNum) && (graph[i][j] != 0)) {
+			// Not creating connections if impossible path (bNum) or connecting to itself
+			if ((graph[i][j] != bNum) && (graph[i][j] != 0.f)) {
 				Connection connection = Connection(i, j, graph[i][j]);
 				connections.push_back(connection);
 			}
 		}
 	}
+	//^ ==============================================================
 }
 
 Graph::~Graph()
