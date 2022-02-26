@@ -48,17 +48,15 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int goalNo
 			endNodeCost = current.costSoFar + connection.getCost();
 			
 			// Skip if the node is closed
-			if (closed.contains(endRecord.node)) {
-				continue;
-			}
+			// We skip here because Dijkstra algorithm will never find a better route to a closed node,
+			// but this isn't true for the A* algorithm
+			if (closed.contains(endRecord.node)) continue;
 			// ... or if it is open and we have found a worse route
-			// MUCH PROBABLY AN ISSUE HERE ============
 			else if (open.contains(endRecord.node)) {
 				// Here we find the record in the open list corresponding to the endNode
-				endRecord = open.find(endRecord.node);
+				endRecord = open.find(endRecord.node); // <<<---------------------------------------
 				if (endRecord.costSoFar <= endNodeCost) continue;
 			}
-			// =========================================
 			// Otherwise we know we've got an unvisited node, so make a record for it
 			else {
 				NodeRecord endRecord = NodeRecord();
