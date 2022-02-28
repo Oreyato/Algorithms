@@ -6,18 +6,16 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int goalNo
 	// Initialise the record for the start node
 	NodeRecord startRecord = NodeRecord();
 	startRecord.node = startNode;
-	startRecord.connection = {};
-	startRecord.costSoFar = 0;
 
 	// Initialize the current node
 	NodeRecord current = startRecord;
 
 	// Initialize the end node
 	int endNode;
+	float endNodeCost = 0;
 
 	// Initialise the record for the end node
 	NodeRecord endNodeRecord = NodeRecord();
-	float endNodeCost = 0;
 
 	// Initialise the open and closed lists
 	PathfindingList open;
@@ -59,15 +57,17 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int goalNo
 				// Here we find the record in the open list corresponding to the endNode
 				endNodeRecord = open.find(endNode); // <<<---------------------------------------
 				if (endNodeRecord.costSoFar <= endNodeCost) continue;
+				// Otherwise we know we've got an unvisited node, so make a record for it
+				else {
+					open.remove(endNodeRecord);
+					endNodeRecord.costSoFar = endNodeCost;
+					endNodeRecord.node = current.node;
+					open.add(endNodeRecord);
+				}
 			}
-			// Otherwise we know we've got an unvisited node, so make a record for it
-			else {
-				NodeRecord endNodeRecord = NodeRecord();
-				endNodeRecord.node = endNode;
-			}
-
 			// At this point we need to update the node
 			// Update the cost and connection
+			endNodeRecord.node = endNode;
 			endNodeRecord.costSoFar = endNodeCost;
 			endNodeRecord.connection = connection;
 

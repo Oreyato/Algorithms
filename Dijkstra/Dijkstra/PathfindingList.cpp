@@ -17,9 +17,17 @@ void PathfindingList::add(NodeRecord nodeP)
 
 void PathfindingList::remove(NodeRecord nodeP)
 {
-	length--;
-	std::vector<NodeRecord>::iterator it = std::find(nodes.begin(), nodes.end(), nodeP);
-	nodes.erase(it);
+	if (nodes.size() > 0) {
+		length--;
+		
+		for (int i = 0; i < nodes.size(); i++)
+		{
+			if (nodes[i].node == nodeP.node)
+			{
+				nodes.erase(nodes.begin() + i);
+			}
+		}
+	}
 }
 
 NodeRecord PathfindingList::getSmallestElement()
@@ -29,11 +37,14 @@ NodeRecord PathfindingList::getSmallestElement()
 	int storedNode = 0;
 
 	// Iterate through list of nodes, skipping the first one because it already is the reference
-	for (int i = 1; i < length; i++)
+	if (nodes.size() > 0)
 	{
-		if (nodes[i].costSoFar < min) {
-			min = nodes[i].costSoFar;
-			storedNode = i;
+		for (int i = 0; i < nodes.size(); i++)
+		{
+			if (nodes[i].costSoFar < min) {
+				min = nodes[i].costSoFar;
+				storedNode = i;
+			}
 		}
 	}
 
@@ -45,13 +56,16 @@ const bool PathfindingList::contains(int nodeP) const
 	bool isContained = false;
 
 	// Iterate through list of nodes
-	for (int i = 0; i < length; i++)
+	if (nodes.size() > 0)
 	{
-		// Is the current node of the list the same as the one we are looking for
-		if (nodes[i].node == nodeP) {
-			isContained = true;
-			break;
-		}
+		for (int i = 0; i < nodes.size(); i++)
+		{
+			// Is the current node of the list the same as the one we are looking for
+			if (nodes[i].node == nodeP) {
+				isContained = true;
+				break;
+			}
+}
 	}
 
 	return isContained;
@@ -62,11 +76,14 @@ const NodeRecord PathfindingList::find(int nodeP) const
 	int storedNode = 0;
 
 	// Iterate through list of nodes
-	for (int i = 0; i < length; i++)
+	if (nodes.size() > 0)
 	{
-		if (nodes[i].node == nodeP) {
-			storedNode = i;
-			break;
+		for (int i = 0; i < nodes.size(); i++)
+		{
+			if (nodes[i].node == nodeP) {
+				storedNode = i;
+				break;
+			}
 		}
 	}
 
