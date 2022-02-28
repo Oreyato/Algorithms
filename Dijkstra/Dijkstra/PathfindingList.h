@@ -12,6 +12,7 @@ public:
 	void remove(NodeRecord nodeP);
 
 	NodeRecord getSmallestElement();
+	NodeRecord getSmallestElement(int aStar);
 	const bool contains(int nodeP) const;
 	const NodeRecord find(int nodeP) const;
 

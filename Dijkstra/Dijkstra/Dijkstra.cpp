@@ -1,6 +1,7 @@
 #include <iostream>
 #include "PathfindingList.h"
 #include "Graph.h"
+#include "Heuristic.h"
 
 std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int goalNode) {
 	// Initialise the record for the start node
@@ -126,16 +127,24 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int goalNo
 }
 
 std::vector<std::string> pathfindAStar(Graph graph, int startNode, int goalNode) {
+	// Initialise heuristic
+	Heuristic heuristic;
+
 	// Initialise the record for the start node
-	NodeRecord startRecord = NodeRecord();
+	NodeRecord startRecord;
 	startRecord.node = startNode;
+	startRecord.connection = {};
+	startRecord.costSoFar = 0.f;
+	startRecord.estimatedTotalCost = heuristic.estimate(startNode);
 
 	// Initialize the current node
 	NodeRecord current = startRecord;
 
 	// Initialize the end node
-	int endNode;
-	float endNodeCost = 0;
+	NodeRecord endNode;
+	endNode.node = 0;
+	endNode.costSoFar = 0.f;
+	endNode.estimatedTotalCost = 0.f;
 
 	// Initialise the record for the end node
 	NodeRecord endNodeRecord = NodeRecord();
@@ -153,7 +162,8 @@ std::vector<std::string> pathfindAStar(Graph graph, int startNode, int goalNode)
 	while (open.getLength() > 0)
 	{
 		// Find the smallest element in the open list
-		current = open.getSmallestElement();
+		// using the estimatedTotalCost this time
+		current = open.getSmallestElement(0);
 		std::cout << "Current node: " << current.node << std::endl;
 
 		// If it is the goal node, then terminate
@@ -168,34 +178,48 @@ std::vector<std::string> pathfindAStar(Graph graph, int startNode, int goalNode)
 			std::cout << "Current connection: " << connection.getFromNode() << " -> " << connection.getToNode() << " | " << connection.getCost() << std::endl;
 
 			//Get the cost estimate for the end node
-			endNode = connection.getToNode();
-			endNodeCost = current.costSoFar + connection.getCost();
+			endNode.node = connection.getToNode();
+			endNode.costSoFar = current.costSoFar + connection.getCost();
 
-			// Skip if the node is closed
-			// We skip here because Dijkstra algorithm will never find a better route to a closed node,
-			// but this isn't true for the A* algorithm
-			if (closed.contains(endNode)) continue;
+			// If the node is closed
+			if (closed.contains(endNode.node)) {
+				// Here we find the record in the closed list corresponding to the endNode
+				endNodeRecord = closed.find(endNode.node);
+
+				// If we didn't find a shorter route, skip
+				if (endNodeRecord.costSoFar <= endNode.costSoFar) continue;
+				// Otherwise, remove it from the closed list
+				else {
+					closed.remove(endNodeRecord);
+				
+					// We can use the node's old cost values to calculate its heuristic
+					// without calling the possibly expensive heuristic function
+					endNode.estimatedTotalCost = endNodeRecord.estimatedTotalCost - endNodeRecord.costSoFar;
+				}
+
+				//continue;
+			}
 			// ... or if it is open and we have found a worse route
-			else if (open.contains(endNode)) {
+			else if (open.contains(endNode.node)) {
 				// Here we find the record in the open list corresponding to the endNode
-				endNodeRecord = open.find(endNode); // <<<---------------------------------------
-				if (endNodeRecord.costSoFar <= endNodeCost) continue;
+				endNodeRecord = open.find(endNode.node); 
+				if (endNodeRecord.costSoFar <= endNode.costSoFar) continue;
 				// Otherwise we know we've got an unvisited node, so make a record for it
 				else {
 					open.remove(endNodeRecord);
-					endNodeRecord.costSoFar = endNodeCost;
+					endNodeRecord.costSoFar = endNode.costSoFar;
 					endNodeRecord.node = current.node;
 					open.add(endNodeRecord);
 				}
 			}
 			// At this point we need to update the node
 			// Update the cost and connection
-			endNodeRecord.node = endNode;
-			endNodeRecord.costSoFar = endNodeCost;
+			endNodeRecord.node = endNode.node;
+			endNodeRecord.costSoFar = endNode.costSoFar;
 			endNodeRecord.connection = connection;
 
 			// And add it to the open list
-			if (!open.contains(endNode)) {
+			if (!open.contains(endNode.node)) {
 				open.add(endNodeRecord);
 			}
 		}
@@ -270,6 +294,7 @@ int main()
 	Graph graph = Graph();
 	graph.displayConnections();
 
-	std::vector<std::string> path = pathfindDijkstra(graph, 0, 5);
+	//std::vector<std::string> path = pathfindDijkstra(graph, 0, 5);
+	std::vector<std::string> path = pathfindAStar(graph, 0, 5);
 	coutPath(path);
 }

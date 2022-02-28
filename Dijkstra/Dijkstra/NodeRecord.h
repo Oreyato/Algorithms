@@ -6,6 +6,7 @@ struct NodeRecord
 	int node;
 	Connection connection;
 	float costSoFar;
+	float estimatedTotalCost;
 
 	bool operator == (NodeRecord const& obj) {
 		if (this->node == obj.node) {

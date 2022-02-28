@@ -39,6 +39,24 @@ NodeRecord PathfindingList::getSmallestElement()
 
 	return nodes[storedNode];
 }
+// This one use the estimatedTotalCost, for the A* algorithm
+NodeRecord PathfindingList::getSmallestElement(int aStar)
+{
+	// Use the first node.costSoFar as reference
+	int min = nodes[0].costSoFar;
+	int storedNode = 0;
+
+	// Iterate through list of nodes, skipping the first one because it already is the reference
+	for (int i = 1; i < length; i++)
+	{
+		if (nodes[i].costSoFar < min) {
+			min = nodes[i].costSoFar;
+			storedNode = i;
+		}
+	}
+
+	return nodes[storedNode];
+}
 
 const bool PathfindingList::contains(int nodeP) const
 {
