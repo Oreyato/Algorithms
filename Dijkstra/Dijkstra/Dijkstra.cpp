@@ -12,8 +12,11 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int goalNo
 	// Initialize the current node
 	NodeRecord current = startRecord;
 
+	// Initialize the end node
+	int endNode;
+
 	// Initialise the record for the end node
-	NodeRecord endRecord = NodeRecord();
+	NodeRecord endNodeRecord = NodeRecord();
 	float endNodeCost = 0;
 
 	// Initialise the open and closed lists
@@ -44,35 +47,33 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int goalNo
 			std::cout << "Current connection: " << connection.getFromNode() << " -> " << connection.getToNode() << " | " << connection.getCost() << std::endl;
 
 			//Get the cost estimate for the end node
-			endRecord.node = connection.getToNode();
+			endNode = connection.getToNode();
 			endNodeCost = current.costSoFar + connection.getCost();
 			
 			// Skip if the node is closed
 			// We skip here because Dijkstra algorithm will never find a better route to a closed node,
 			// but this isn't true for the A* algorithm
-			if (closed.contains(endRecord.node)) continue;
+			if (closed.contains(endNode)) continue;
 			// ... or if it is open and we have found a worse route
-			else if (open.contains(endRecord.node)) {
+			else if (open.contains(endNode)) {
 				// Here we find the record in the open list corresponding to the endNode
-				endRecord = open.find(endRecord.node); // <<<---------------------------------------
-				if (endRecord.costSoFar <= endNodeCost) continue;
+				endNodeRecord = open.find(endNode); // <<<---------------------------------------
+				if (endNodeRecord.costSoFar <= endNodeCost) continue;
 			}
 			// Otherwise we know we've got an unvisited node, so make a record for it
 			else {
-				NodeRecord endRecord = NodeRecord();
-				endRecord.node = current.node;
-				//endRecord.connection = connection;
-				//endRecord.costSoFar = endNodeCost;
+				NodeRecord endNodeRecord = NodeRecord();
+				endNodeRecord.node = endNode;
 			}
 
 			// At this point we need to update the node
 			// Update the cost and connection
-			endRecord.costSoFar = endNodeCost;
-			endRecord.connection = connection;
+			endNodeRecord.costSoFar = endNodeCost;
+			endNodeRecord.connection = connection;
 
 			// And add it to the open list
-			if (!open.contains(endRecord.node)) {
-				open.add(endRecord);
+			if (!open.contains(endNode)) {
+				open.add(endNodeRecord);
 			}
 		}
 
