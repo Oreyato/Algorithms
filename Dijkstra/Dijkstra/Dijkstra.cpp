@@ -135,7 +135,7 @@ std::vector<std::string> pathfindAStar(Graph graph, int startNode, int goalNode)
 	startRecord.node = startNode;
 	startRecord.connection = {};
 	startRecord.costSoFar = 0.f;
-	startRecord.estimatedTotalCost = heuristic.estimate(startNode);
+	startRecord.estimatedTotalCost = heuristic.estimate(startRecord);
 
 	// Initialize the current node
 	NodeRecord current = startRecord;
@@ -181,7 +181,7 @@ std::vector<std::string> pathfindAStar(Graph graph, int startNode, int goalNode)
 			endNode.node = connection.getToNode();
 			endNode.costSoFar = current.costSoFar + connection.getCost();
 
-			// If the node is closed
+			// If the node is closed we may have to skip or remove it from the closed list
 			if (closed.contains(endNode.node)) {
 				// Here we find the record in the closed list corresponding to the endNode
 				endNodeRecord = closed.find(endNode.node);
@@ -199,23 +199,37 @@ std::vector<std::string> pathfindAStar(Graph graph, int startNode, int goalNode)
 
 				//continue;
 			}
-			// ... or if it is open and we have found a worse route
+			// Skip if the node is open and we've not found a better route
 			else if (open.contains(endNode.node)) {
 				// Here we find the record in the open list corresponding to the endNode
 				endNodeRecord = open.find(endNode.node); 
+
+				// If our route is no better, then skip
 				if (endNodeRecord.costSoFar <= endNode.costSoFar) continue;
-				// Otherwise we know we've got an unvisited node, so make a record for it
 				else {
-					open.remove(endNodeRecord);
-					endNodeRecord.costSoFar = endNode.costSoFar;
-					endNodeRecord.node = current.node;
-					open.add(endNodeRecord);
+					// We can use the node's old cost values to calculate its heuristic
+					// without calling the possibly expensive heuristic function
+					endNode.estimatedTotalCost = endNodeRecord.estimatedTotalCost - endNodeRecord.costSoFar;
 				}
 			}
+			// Otherwise we know we've got an unvisited node, so make a record for it
+			else {
+				open.remove(endNodeRecord);
+				endNodeRecord.costSoFar = endNode.costSoFar;
+				endNodeRecord.node = current.node;
+
+				// We will need to calculate the heuristic value using the function,
+				// since we don't have an existing record to use
+				endNodeRecord.estimatedTotalCost = heuristic.estimate(endNode);
+
+				open.add(endNodeRecord);
+			}
+
 			// At this point we need to update the node
-			// Update the cost and connection
+			// Update the cost, estimate and connection
 			endNodeRecord.node = endNode.node;
 			endNodeRecord.costSoFar = endNode.costSoFar;
+			endNodeRecord.estimatedTotalCost = endNode.costSoFar + endNode.estimatedTotalCost;
 			endNodeRecord.connection = connection;
 
 			// And add it to the open list
