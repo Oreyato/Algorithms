@@ -214,15 +214,12 @@ std::vector<std::string> pathfindAStar(Graph graph, int startNode, int goalNode)
 			}
 			// Otherwise we know we've got an unvisited node, so make a record for it
 			else {
-				open.remove(endNodeRecord);
 				endNodeRecord.costSoFar = endNode.costSoFar;
 				endNodeRecord.node = current.node;
 
 				// We will need to calculate the heuristic value using the function,
 				// since we don't have an existing record to use
 				endNodeRecord.estimatedTotalCost = heuristic.estimate(endNode);
-
-				open.add(endNodeRecord);
 			}
 
 			// At this point we need to update the node
