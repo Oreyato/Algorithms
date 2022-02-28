@@ -94,6 +94,12 @@ std::vector<std::string> pathfindDijkstra(Graph graph, int startNode, int goalNo
 		// Compile the list of connections in the path
 		std::vector<int> nodesPath;
 
+		// Get the total cost
+		float totalCost = current.costSoFar;
+		// Cout the total cost
+		std::cout << std::endl;
+		std::cout << "Found the best path, for " << totalCost << std::endl;
+
 		// Work back along the path, accumulating connections
 		while (current.node != startNode) {
 			nodesPath.push_back(current.node);
