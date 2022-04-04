@@ -24,6 +24,7 @@
     <ProjectGuid>{1eab4fc4-f974-4680-99c8-3ebf50ff93b2}</ProjectGuid>
     <RootNamespace>Dijkstra</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>DijkstraAStar</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -140,7 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Connection.cpp" />
-    <ClCompile Include="Dijkstra.cpp" />
+    <ClCompile Include="DijkstraAStar.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="PathfindingList.cpp" />
   </ItemGroup>
