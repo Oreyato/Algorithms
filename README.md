@@ -1,5 +1,7 @@
 # Algorithms
 
-After a though fight, Dijkstra is finaly working!
+Dijkstra is working!
 
-A* algorithm is currently being investigated in its own branch 
+A* algorithm was being investigated in its own branch but will be started all over again (currently) in the main branch
+
+StateMachine WIP
