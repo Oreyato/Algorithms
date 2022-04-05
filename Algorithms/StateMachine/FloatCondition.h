@@ -1,12 +1,12 @@
 #pragma once
-#include "Condition.h"
+#include "ICondition.h"
+
 class FloatCondition :
-    public Condition
+    public ICondition
 {
 public:
     bool test() { return minValue <= *testValue <= maxValue; }
 
-private:
     float minValue{ 0 };
     float maxValue{ 0 };
     float* testValue{ nullptr };

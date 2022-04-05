@@ -1,6 +1,12 @@
 #pragma once
 
-struct Action
+class Action
 {
+public:
+	Action();
+
+	void execute();
+
+private:
 
 };

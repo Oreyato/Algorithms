@@ -7,16 +7,16 @@ class State
 public:
 	State();
 
-	std::vector<Action*> getEntryAction() { return entryAction; }
-	std::vector<Action*> getAction() { return action; }
-	std::vector<Action*> getExitAction() { return exitAction; }
+	std::vector<Action*> getEntryActions() { return entryActions; }
+	std::vector<Action*> getActions() { return actions; }
+	std::vector<Action*> getExitActions() { return exitActions; }
 
 	std::vector<Transition*> getTransitions() { return transitions; }
 
 private:
-	std::vector<Action*> entryAction{ nullptr };
-	std::vector<Action*> action{ nullptr };
-	std::vector<Action*> exitAction{ nullptr };
+	std::vector<Action*> entryActions{ nullptr };
+	std::vector<Action*> actions{ nullptr };
+	std::vector<Action*> exitActions{ nullptr };
 
 	std::vector<Transition*> transitions{ nullptr };
 };

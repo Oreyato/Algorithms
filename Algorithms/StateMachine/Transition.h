@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-#include "Condition.h"
+#include "FloatCondition.h"
 
 class State;
 class Action;
@@ -17,8 +17,8 @@ public:
 	std::vector<Action*> getActions() { return actions; }
 
 private:
-	Condition condition;
+	ICondition condition;
 
-	State* targetState;
+	State* targetState{ nullptr };
 	std::vector<Action*> actions;
 };
