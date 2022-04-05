@@ -9,6 +9,12 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="Fichiers sources\Conditions.cpp">
+      <UniqueIdentifier>{008af903-5dbc-4f56-93dc-64436cd3a2ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Conditions.h">
+      <UniqueIdentifier>{73266a4d-e343-4561-ac42-dca9962fb710}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -23,6 +29,9 @@
     <ClCompile Include="Transition.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Condition.cpp">
+      <Filter>Fichiers sources\Conditions.cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StateMachine.h">
@@ -36,6 +45,9 @@
     </ClInclude>
     <ClInclude Include="Transition.h">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Condition.h">
+      <Filter>Fichiers d%27en-tête\Conditions.h</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
