@@ -1,6 +1,7 @@
 #include "Action.h"
 
-Action::Action()
+Action::Action(std::string nameP) :
+	name(nameP)
 {
 }
 

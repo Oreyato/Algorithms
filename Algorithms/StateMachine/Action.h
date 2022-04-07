@@ -1,12 +1,13 @@
 #pragma once
+#include <string>
 
 class Action
 {
 public:
-	Action();
+	Action(std::string nameP);
 
 	void execute();
 
 private:
-
+	std::string name;
 };
