@@ -9,7 +9,7 @@ class Action;
 class Transition
 {
 public:
-	Transition();
+	Transition(std::vector<Action*> actionsP, ICondition& conditionP);
 	~Transition();
 
 	bool isTriggered() { return condition.test(); }
@@ -17,7 +17,8 @@ public:
 	std::vector<Action*> getActions() { return actions; }
 
 private:
-	Condition condition;
+	FloatCondition floatCdt;
+	ICondition& condition = floatCdt;
 
 	State* targetState{ nullptr };
 	std::vector<Action*> actions;

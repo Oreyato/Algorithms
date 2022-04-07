@@ -43,7 +43,7 @@
     <ClInclude Include="Transition.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Condition.h">
+    <ClInclude Include="ICondition.h">
       <Filter>Fichiers d%27en-tête\Conditions.h</Filter>
     </ClInclude>
     <ClInclude Include="FloatCondition.h">

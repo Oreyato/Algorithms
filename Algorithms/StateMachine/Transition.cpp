@@ -3,7 +3,14 @@
 #include "Action.h"
 #include "State.h"
 
-Transition::Transition()
+#include "AndCondition.h"
+#include "FloatCondition.h"
+#include "NotCondition.h"
+#include "OrCondition.h"
+
+Transition::Transition(std::vector<Action*> actionsP, ICondition& conditionP) :
+	actions{actionsP},
+	condition{conditionP}
 {
 }
 

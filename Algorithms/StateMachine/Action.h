@@ -5,7 +5,6 @@ class Action
 {
 public:
 	Action(std::string nameP);
-
 	void execute();
 
 private:

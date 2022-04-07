@@ -1,14 +1,14 @@
 #pragma once
-#include "Condition.h"
+#include "ICondition.h"
 
-class AndCondition :
-    public Condition
+class OrCondition :
+    public ICondition
 {
 public:
-    bool test() { return conditionA->test() || conditionB->test(); }
+    bool test() override { return conditionA->test() || conditionB->test(); }
 
 private:
-    Condition* conditionA{ nullptr };
-    Condition* conditionB{ nullptr };
+    ICondition* conditionA{ nullptr };
+    ICondition* conditionB{ nullptr };
 
 };
