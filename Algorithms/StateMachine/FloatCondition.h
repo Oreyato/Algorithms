@@ -1,8 +1,8 @@
 #pragma once
-#include "ICondition.h"
+#include "Condition.h"
 
 class FloatCondition :
-    public ICondition
+    public Condition
 {
 public:
     bool test() { return minValue <= *testValue <= maxValue; }

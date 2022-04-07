@@ -1,6 +1,6 @@
 #pragma once
 
-class ICondition
+class Condition
 {
 public:
 	bool test() { return false; }

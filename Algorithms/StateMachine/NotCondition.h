@@ -1,13 +1,13 @@
 #pragma once
-#include "ICondition.h"
+#include "Condition.h"
 
 class NotCondition :
-    public ICondition
+    public Condition
 {
 public:
     bool test() { return !condition->test(); }
 
 private:
-    ICondition* condition;
+    Condition* condition;
 
 };

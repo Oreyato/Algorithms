@@ -5,7 +5,9 @@
 class State
 {
 public:
-	State();
+	State(std::vector<Action*> entryActionsP, std::vector<Action*> actionsP, std::vector<Action*> exitActionsP, std::vector<Transition*> transitionsP);
+
+	void execute();
 
 	std::vector<Action*> getEntryActions() { return entryActions; }
 	std::vector<Action*> getActions() { return actions; }

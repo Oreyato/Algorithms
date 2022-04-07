@@ -148,7 +148,7 @@
   <ItemGroup>
     <ClInclude Include="Action.h" />
     <ClInclude Include="AndCondition.h" />
-    <ClInclude Include="ICondition.h" />
+    <ClInclude Include="Condition.h" />
     <ClInclude Include="FloatCondition.h" />
     <ClInclude Include="NotCondition.h" />
     <ClInclude Include="OrCondition.h" />

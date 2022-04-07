@@ -1,14 +1,14 @@
 #pragma once
-#include "ICondition.h"
+#include "Condition.h"
 
 class AndCondition :
-    public ICondition
+    public Condition
 {
 public:
     bool test() { return conditionA->test() || conditionB->test(); }
 
 private:
-    ICondition* conditionA{ nullptr };
-    ICondition* conditionB{ nullptr };
+    Condition* conditionA{ nullptr };
+    Condition* conditionB{ nullptr };
 
 };

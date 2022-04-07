@@ -17,7 +17,7 @@ public:
 	std::vector<Action*> getActions() { return actions; }
 
 private:
-	ICondition condition;
+	Condition condition;
 
 	State* targetState{ nullptr };
 	std::vector<Action*> actions;
