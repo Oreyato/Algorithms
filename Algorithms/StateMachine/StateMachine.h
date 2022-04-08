@@ -14,6 +14,6 @@ private:
 	std::vector<State> states;
 
 	State initialState;
-	State currentState{ initialState };
+	State currentState;
 };
 

@@ -9,16 +9,15 @@ class Action;
 class Transition
 {
 public:
-	Transition(std::vector<Action*> actionsP, ICondition& conditionP);
+	Transition(State* targetStateP, std::vector<Action*> actionsP, ICondition* conditionP);
 	~Transition();
 
-	bool isTriggered() { return condition.test(); }
+	bool isTriggered() { return condition->test(); }
 	State* getTargetState() { return targetState; }
 	std::vector<Action*> getActions() { return actions; }
 
 private:
-	FloatCondition floatCdt;
-	ICondition& condition = floatCdt;
+	ICondition* condition;
 
 	State* targetState{ nullptr };
 	std::vector<Action*> actions;

@@ -8,7 +8,8 @@
 #include "NotCondition.h"
 #include "OrCondition.h"
 
-Transition::Transition(std::vector<Action*> actionsP, ICondition& conditionP) :
+Transition::Transition(State* targetStateP, std::vector<Action*> actionsP, ICondition* conditionP) :
+	targetState{targetStateP},
 	actions{actionsP},
 	condition{conditionP}
 {
