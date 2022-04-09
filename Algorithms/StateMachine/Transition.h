@@ -12,6 +12,7 @@ class Action;
 class Transition
 {
 public:
+	Transition(Action* actionP, ICondition* conditionP);
 	Transition(State* targetStateP, Action* actionP, ICondition* conditionP);
 	Transition(State* targetStateP, std::vector<Action*> actionsP, ICondition* conditionP);
 	~Transition();
@@ -19,6 +20,8 @@ public:
 	bool isTriggered() { return condition->test(); }
 	State* getTargetState() { return targetState; }
 	std::vector<Action*> getActions() { return actions; }
+
+	void setTargetState(State* targetStateP) { targetState = targetStateP; }
 
 private:
 	ICondition* condition;

@@ -3,6 +3,13 @@
 #include "Action.h"
 #include "State.h"
 
+Transition::Transition(Action* actionP, ICondition* conditionP) :
+	targetState{ nullptr },
+	action{ actionP },
+	condition{ conditionP }
+{
+}
+
 Transition::Transition(State* targetStateP, Action* actionP, ICondition* conditionP) :
 	targetState{ targetStateP },
 	action{ actionP },
