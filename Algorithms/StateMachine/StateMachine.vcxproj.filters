@@ -12,6 +12,12 @@
     <Filter Include="Fichiers d%27en-tête\Conditions.h">
       <UniqueIdentifier>{73266a4d-e343-4561-ac42-dca9962fb710}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Actions">
+      <UniqueIdentifier>{39de1cb6-fafc-4570-a515-7ef99a4cbb5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Actions">
+      <UniqueIdentifier>{5a800add-4e9e-4c32-847d-d3c3a6bc02f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -27,7 +33,7 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Action.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\Actions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -35,9 +41,6 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="State.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Action.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Transition.h">
@@ -57,6 +60,9 @@
     </ClInclude>
     <ClInclude Include="OrCondition.h">
       <Filter>Fichiers d%27en-tête\Conditions.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Action.h">
+      <Filter>Fichiers d%27en-tête\Actions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 #include "Action.h"
+#include <iostream>
 
 Action::Action(std::string nameP) :
 	name(nameP)
@@ -7,4 +8,5 @@ Action::Action(std::string nameP) :
 
 void Action::execute()
 {
+	std::cout << name << std::endl;
 }

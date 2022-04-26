@@ -30,7 +30,11 @@ int main() {
 	testTransitions[0]->setTargetState(&testState);
 
 	StateMachine stateMachineTest{ testState };
-	stateMachineTest.executeActions(stateMachineTest.update());
+	
+	actions = stateMachineTest.update();
+	stateMachineTest.executeActions(actions);
+	actions = stateMachineTest.update();
+	stateMachineTest.executeActions(actions);
 
 	return 0;
 }
