@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DijkstraAStar", "Dijkstra\D
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StateMachine", "StateMachine\StateMachine.vcxproj", "{8EFD34D9-B8C6-4E99-8183-5CF60EC35567}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests\Tests.vcxproj", "{A23B1019-A4D8-4CDD-8C2B-A7A6C442494B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{8EFD34D9-B8C6-4E99-8183-5CF60EC35567}.Release|x64.Build.0 = Release|x64
 		{8EFD34D9-B8C6-4E99-8183-5CF60EC35567}.Release|x86.ActiveCfg = Release|Win32
 		{8EFD34D9-B8C6-4E99-8183-5CF60EC35567}.Release|x86.Build.0 = Release|Win32
+		{A23B1019-A4D8-4CDD-8C2B-A7A6C442494B}.Debug|x64.ActiveCfg = Debug|x64
+		{A23B1019-A4D8-4CDD-8C2B-A7A6C442494B}.Debug|x64.Build.0 = Debug|x64
+		{A23B1019-A4D8-4CDD-8C2B-A7A6C442494B}.Debug|x86.ActiveCfg = Debug|Win32
+		{A23B1019-A4D8-4CDD-8C2B-A7A6C442494B}.Debug|x86.Build.0 = Debug|Win32
+		{A23B1019-A4D8-4CDD-8C2B-A7A6C442494B}.Release|x64.ActiveCfg = Release|x64
+		{A23B1019-A4D8-4CDD-8C2B-A7A6C442494B}.Release|x64.Build.0 = Release|x64
+		{A23B1019-A4D8-4CDD-8C2B-A7A6C442494B}.Release|x86.ActiveCfg = Release|Win32
+		{A23B1019-A4D8-4CDD-8C2B-A7A6C442494B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

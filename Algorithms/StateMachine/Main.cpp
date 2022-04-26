@@ -41,8 +41,8 @@ int main() {
 	vector<Transition*> fromAttackingToOnGuardTransitions;
 	fromAttackingToOnGuardTransitions.push_back(&placeholderTransition);
 
-	State onGuard{ onGuardEntryActions, onGuardActions, onGuardExitActions, fromGuardToAttackTransitions };
-	State attacking{ attackEntryActions, attackActions, attackExitActions, fromAttackingToOnGuardTransitions };
+	State onGuard{ onGuardEntryActions, onGuardActions, onGuardExitActions, &fromGuardToAttackTransitions };
+	State attacking{ attackEntryActions, attackActions, attackExitActions, &fromAttackingToOnGuardTransitions };
 	//v transition from onGuard to attacking =============
 	//v First transition ========================
 	// Transition action
@@ -65,7 +65,7 @@ int main() {
 	Action loosingEnemy{ "I lost the enemy!" };
 
 	// Transition condition
-	float testValue02 = 5.0f;
+	float testValue02 = 15.0f;
 	FloatCondition floatCdt02{ 0.0f, 10.0f, testValue02 };
 
 	Transition fromAttackingToOnGuard01{ &onGuard, &loosingEnemy, &floatCdt02 };
