@@ -30,8 +30,16 @@ int main() {
 	attackActions.push_back(&attacking01);
 	attackExitActions.push_back(&attackingExit01);
 	//v transitions ==================================================
+	// =====
+	Action placeholderAction{"placeholder"};
+	FloatCondition placeholderCondition{0.0f, 1.0f, 2.0f};
+	Transition placeholderTransition{&placeholderAction, &placeholderCondition};
+	// =====
+
 	vector<Transition*> fromGuardToAttackTransitions;
+	fromGuardToAttackTransitions.push_back(&placeholderTransition);
 	vector<Transition*> fromAttackingToOnGuardTransitions;
+	fromAttackingToOnGuardTransitions.push_back(&placeholderTransition);
 
 	State onGuard{ onGuardEntryActions, onGuardActions, onGuardExitActions, fromGuardToAttackTransitions };
 	State attacking{ attackEntryActions, attackActions, attackExitActions, fromAttackingToOnGuardTransitions };
@@ -49,7 +57,7 @@ int main() {
 	//^ First transition ========================
 
 	//fromGuardToAttackTransitions[0]->setTargetState(&attacking);
-	// 
+
 	//^ transition from onGuard to attacking =============
 	//v transition from attacking to onGuard =============
 	//v First transition ========================
