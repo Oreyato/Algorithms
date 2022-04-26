@@ -35,7 +35,7 @@ int main() {
 
 	State onGuard{ onGuardEntryActions, onGuardActions, onGuardExitActions, fromGuardToAttackTransitions };
 	State attacking{ attackEntryActions, attackActions, attackExitActions, fromAttackingToOnGuardTransitions };
-	//v transition from onGuard to attack ================
+	//v transition from onGuard to attacking =============
 	//v First transition ========================
 	// Transition action
 	Action seeEnemy{ "I'm seing an enemy!" };
@@ -44,12 +44,13 @@ int main() {
 	float testValue = 5.0f;
 	FloatCondition floatCdt{ 0.0f, 10.0f, testValue };
 
-	Transition fromGuardToAttack01{ &seeEnemy, &floatCdt };
-	fromGuardToAttackTransitions.push_back(&fromGuardToAttack01);
+	Transition fromOnGuardToAttacking01{&attacking, &seeEnemy, &floatCdt };
+	fromGuardToAttackTransitions.push_back(&fromOnGuardToAttacking01);
 	//^ First transition ========================
 
-	fromGuardToAttackTransitions[0]->setTargetState(&attacking);
-	//^ transition from onGuard to attack ================
+	//fromGuardToAttackTransitions[0]->setTargetState(&attacking);
+	// 
+	//^ transition from onGuard to attacking =============
 	//v transition from attacking to onGuard =============
 	//v First transition ========================
 	// Transition action
@@ -59,11 +60,11 @@ int main() {
 	float testValue02 = 5.0f;
 	FloatCondition floatCdt02{ 0.0f, 10.0f, testValue02 };
 
-	Transition fromAttackingToOnGuard01{ &loosingEnemy, &floatCdt02 };
+	Transition fromAttackingToOnGuard01{ &onGuard, &loosingEnemy, &floatCdt02 };
 	fromAttackingToOnGuardTransitions.push_back(&fromAttackingToOnGuard01);
 	//^ First transition ========================
 
-	fromAttackingToOnGuardTransitions[0]->setTargetState(&onGuard);
+	//fromAttackingToOnGuardTransitions[0]->setTargetState(&onGuard);
 	
 	//^ transition from attacking to onGuard =============
 	// ===============================================================
@@ -72,6 +73,8 @@ int main() {
 	StateMachine stateMachineTest{ onGuard };
 	
 	vector<Action*> actions = stateMachineTest.update();
+	stateMachineTest.executeActions(actions);
+	actions = stateMachineTest.update();
 	stateMachineTest.executeActions(actions);
 	actions = stateMachineTest.update();
 	stateMachineTest.executeActions(actions);

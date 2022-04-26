@@ -6,7 +6,7 @@
 class StateMachine
 {
 public:
-	StateMachine(State initialStateP);
+	StateMachine(State& initialStateP);
 	std::vector<Action*> update();
 	void executeActions(std::vector<Action*> actionsP);
 

@@ -14,7 +14,7 @@ class Transition
 public:
 	Transition(Action* actionP, ICondition* conditionP);
 	Transition(State* targetStateP, Action* actionP, ICondition* conditionP);
-	Transition(State* targetStateP, std::vector<Action*> actionsP, ICondition* conditionP);
+	Transition(State* targetStateP, std::vector<Action*>& actionsP, ICondition* conditionP);
 	~Transition();
 
 	bool isTriggered() { return condition->test(); }

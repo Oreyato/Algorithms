@@ -17,7 +17,7 @@ Transition::Transition(State* targetStateP, Action* actionP, ICondition* conditi
 {
 }
 
-Transition::Transition(State* targetStateP, std::vector<Action*> actionsP, ICondition* conditionP) :
+Transition::Transition(State* targetStateP, std::vector<Action*>& actionsP, ICondition* conditionP) :
 	targetState{targetStateP},
 	actions{actionsP},
 	condition{conditionP}

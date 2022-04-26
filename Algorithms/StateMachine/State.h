@@ -9,11 +9,11 @@ public:
 
 	void execute();
 
-	std::vector<Action*> getEntryActions() { return entryActions; }
-	std::vector<Action*> getActions() { return actions; }
-	std::vector<Action*> getExitActions() { return exitActions; }
+	const std::vector<Action*> getEntryActions() { return entryActions; }
+	const std::vector<Action*> getActions() { return actions; }
+	const std::vector<Action*> getExitActions() { return exitActions; }
 
-	std::vector<Transition*> getTransitions() { return transitions; }
+	const std::vector<Transition*> getTransitions() { return transitions; }
 
 private:
 	std::vector<Action*> entryActions{ nullptr };
