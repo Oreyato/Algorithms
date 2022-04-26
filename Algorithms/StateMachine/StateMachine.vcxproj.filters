@@ -35,6 +35,9 @@
     <ClCompile Include="Action.cpp">
       <Filter>Fichiers sources\Actions</Filter>
     </ClCompile>
+    <ClCompile Include="FloatCondition.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StateMachine.h">

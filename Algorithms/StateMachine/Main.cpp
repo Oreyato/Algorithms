@@ -4,34 +4,74 @@
 using namespace std;
 
 int main() {	
-	Action actionA{ "Action 1" };
-	Action actionB{ "Action 2" };
-	Action actionC{ "Action 3" };
+	//v On Guard to Attack ===========================================
+	//v onGuard ======================================================
+	Action onGuardEnter01{ "onGuard entering" };
+	Action onGuard01{ "onGuard" };
+	Action onGuardExit01{ "onGuard exiting" };
 
-	vector<Action*> entryActions;
-	vector<Action*> actions;
-	vector<Action*> exitActions;
+	vector<Action*> onGuardEntryActions;
+	vector<Action*> onGuardActions;
+	vector<Action*> onGuardExitActions;
 
-	entryActions.push_back(&actionA);
-	actions.push_back(&actionB);
-	exitActions.push_back(&actionC);
+	onGuardEntryActions.push_back(&onGuardEnter01);
+	onGuardActions.push_back(&onGuard01);
+	onGuardExitActions.push_back(&onGuardExit01);
+	//v attacking ====================================================
+	Action attackingEnter01{ "attacking entering" };
+	Action attacking01{ "attacking" };
+	Action attackingExit01{ "attacking exiting" };
 
-	float testValue = 5;
+	vector<Action*> attackEntryActions;
+	vector<Action*> attackActions;
+	vector<Action*> attackExitActions;
 
-	FloatCondition floatCdt{ 0, 10, testValue };
+	attackEntryActions.push_back(&attackingEnter01);
+	attackActions.push_back(&attacking01);
+	attackExitActions.push_back(&attackingExit01);
+	//v transitions ==================================================
+	vector<Transition*> fromGuardToAttackTransitions;
+	vector<Transition*> fromAttackingToOnGuardTransitions;
 
-	Transition testTransition{ &actionC, &floatCdt };
+	State onGuard{ onGuardEntryActions, onGuardActions, onGuardExitActions, fromGuardToAttackTransitions };
+	State attacking{ attackEntryActions, attackActions, attackExitActions, fromAttackingToOnGuardTransitions };
+	//v transition from onGuard to attack ================
+	//v First transition ========================
+	// Transition action
+	Action seeEnemy{ "I'm seing an enemy!" };
 
-	vector<Transition*> testTransitions;
-	testTransitions.push_back(&testTransition);
+	// Transition condition
+	float testValue = 5.0f;
+	FloatCondition floatCdt{ 0.0f, 10.0f, testValue };
 
-	State testState{ entryActions, actions, exitActions, testTransitions };
+	Transition fromGuardToAttack01{ &seeEnemy, &floatCdt };
+	fromGuardToAttackTransitions.push_back(&fromGuardToAttack01);
+	//^ First transition ========================
 
-	testTransitions[0]->setTargetState(&testState);
+	fromGuardToAttackTransitions[0]->setTargetState(&attacking);
+	//^ transition from onGuard to attack ================
+	//v transition from attacking to onGuard =============
+	//v First transition ========================
+	// Transition action
+	Action loosingEnemy{ "I lost the enemy!" };
 
-	StateMachine stateMachineTest{ testState };
+	// Transition condition
+	float testValue02 = 5.0f;
+	FloatCondition floatCdt02{ 0.0f, 10.0f, testValue02 };
+
+	Transition fromAttackingToOnGuard01{ &loosingEnemy, &floatCdt02 };
+	fromAttackingToOnGuardTransitions.push_back(&fromAttackingToOnGuard01);
+	//^ First transition ========================
+
+	fromAttackingToOnGuardTransitions[0]->setTargetState(&onGuard);
 	
-	actions = stateMachineTest.update();
+	//^ transition from attacking to onGuard =============
+	// ===============================================================
+	//^ On Guard to Attack ===========================================
+
+	StateMachine stateMachineTest{ onGuard };
+	
+	vector<Action*> actions = stateMachineTest.update();
 	stateMachineTest.executeActions(actions);
 	actions = stateMachineTest.update();
 	stateMachineTest.executeActions(actions);

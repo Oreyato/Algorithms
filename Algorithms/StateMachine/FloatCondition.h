@@ -9,7 +9,7 @@ public:
         ICondition(), minValue(minValueP), maxValue(maxValueP), testValue(testValueP)
     {}
 
-    bool test() override { return minValue <= testValue <= maxValue; }
+    bool test() override;
 
     float minValue{ 0 };
     float maxValue{ 0 };
