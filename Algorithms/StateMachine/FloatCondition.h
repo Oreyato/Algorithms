@@ -5,7 +5,7 @@ class FloatCondition :
     public ICondition
 {
 public:
-    FloatCondition(float minValueP, float maxValueP, float testValueP) : 
+    FloatCondition(float minValueP, float maxValueP, float* testValueP) : 
         ICondition(), minValue(minValueP), maxValue(maxValueP), testValue(testValueP)
     {}
 
@@ -13,6 +13,6 @@ public:
 
     float minValue{ 0 };
     float maxValue{ 0 };
-    float testValue{ 0 };
+    float* testValue{ nullptr };
 };
 

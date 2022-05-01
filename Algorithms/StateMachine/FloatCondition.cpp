@@ -3,7 +3,7 @@
 bool FloatCondition::test() {
     bool test = false;
 
-    if (minValue <= testValue && testValue <= maxValue) {
+    if (minValue <= *testValue && *testValue <= maxValue) {
         test = true;
     }
     else {

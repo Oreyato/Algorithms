@@ -38,6 +38,9 @@
     <ClCompile Include="FloatCondition.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="IntCondition.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StateMachine.h">
@@ -66,6 +69,9 @@
     </ClInclude>
     <ClInclude Include="Action.h">
       <Filter>Fichiers d%27en-tête\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="IntCondition.h">
+      <Filter>Fichiers d%27en-tête\Conditions.h</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

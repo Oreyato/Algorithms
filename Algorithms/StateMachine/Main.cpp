@@ -9,7 +9,19 @@ void updateBoss(StateMachine& smP);
 
 //^ Functions ====================================================
 //v Variables ====================================================
+float fInf = 10000.0f;
+int iInf = 10000;
+float epsilon = 0.000001f;
+
 bool gameEnded = false;
+float gap = 10.0f;
+
+// First phase ==========================
+float midRange = 5.0f;
+float closeRange = 3.0f;
+
+// Second phase =========================
+
 //^ Variables ====================================================
 
 
@@ -106,63 +118,68 @@ int main() {
 	//v INIT =========================================================
 	// ===============================================================
 	
-	//v On Guard to Attack ===========================================
-	//v onGuard ======================================================
-	Action onGuard01{ "onGuard" };
+	//v Going forward / mid range attack =============================
+	//v Forward ======================================================
+	Action forwardAction{ "forward" };
 
-	vector<Action*> onGuardActions;
+	vector<Action*> forwardActions;
 
-	onGuardActions.push_back(&onGuard01);
-	//v attacking ====================================================
-	Action attacking01{ "attacking" };
+	forwardActions.push_back(&forwardAction);
+	//v mid range attacks ============================================
+	Action griffes{ "Griffes" };
+	Action ailes{ "Ailes" };
+	Action queue{ "queue" };
 
-	vector<Action*> attackActions;
+	vector<Action*> midRangeAttacksActions;
 
-	attackActions.push_back(&attacking01);
+	midRangeAttacksActions.push_back(&griffes);
+	midRangeAttacksActions.push_back(&ailes);
+	midRangeAttacksActions.push_back(&queue);
 	//v transitions ==================================================
 	// =====
 	Action placeholderAction{ "placeholder" };
-	FloatCondition placeholderCondition{ 0.0f, 1.0f, 2.0f };
+	IntCondition placeholderCondition{0, 5, 3};
 	Transition placeholderTransition{ &placeholderAction, &placeholderCondition };
+	// je dois me débarrasser de ce code qui pose problème ! - d'autant que les actions de transition semblent ne pas être prises en compte et ça ça degz
 	// =====
 
-	vector<Transition*> fromGuardToAttackTransitions;
-	fromGuardToAttackTransitions.push_back(&placeholderTransition);
-	vector<Transition*> fromAttackingToOnGuardTransitions;
-	fromAttackingToOnGuardTransitions.push_back(&placeholderTransition);
+	vector<Transition*> fromForwardToMidRangeAttacksTransitions;
+	fromForwardToMidRangeAttacksTransitions.push_back(&placeholderTransition);
+	vector<Transition*> fromMidRangeAttacksToForwardTransitions;
+	fromMidRangeAttacksToForwardTransitions.push_back(&placeholderTransition);
 
-	State onGuard{ onGuardActions,  &fromGuardToAttackTransitions };
-	State attacking{ attackActions, &fromAttackingToOnGuardTransitions };
-	//v transition from onGuard to attacking =============
+	State forward{ forwardActions,  &fromForwardToMidRangeAttacksTransitions };
+	State midRangeAttack{ midRangeAttacksActions, &fromMidRangeAttacksToForwardTransitions };
+	//v transition from forward to midRangeAttack ========
 	//v First transition ========================
 	// Transition action
-	Action seeEnemy{ "I'm seing an enemy!" };
+	Action seeEnemy{ "The enemy is close enough" }; // <--- n'a pas l'air de fonctionner ! 
 
 	// Transition condition
-	float testValue = 5.0f;
-	FloatCondition floatCdt{ 0.0f, 10.0f, testValue };
+	FloatCondition midDistanceCdt{ closeRange + epsilon, midRange, &gap };
 
-	Transition fromOnGuardToAttacking01{ &attacking, &seeEnemy, &floatCdt };
-	fromGuardToAttackTransitions.push_back(&fromOnGuardToAttacking01);
+	Transition fromForwardToMidRangeAttack{ &midRangeAttack, &seeEnemy, &midDistanceCdt };
+	fromForwardToMidRangeAttacksTransitions.push_back(&fromForwardToMidRangeAttack);
+	fromForwardToMidRangeAttacksTransitions.erase(fromForwardToMidRangeAttacksTransitions.begin());
 	//^ First transition ========================
-	//^ transition from onGuard to attacking =============
-	//v transition from attacking to onGuard =============
+	//^ transition from forward to midRangeAttack ========
+	//v transition from midRangeAttack to forward ========
 	//v First transition ========================
 	// Transition action
-	Action loosingEnemy{ "I lost the enemy!" };
+	Action loosingEnemy{ "The enemy is too far!" };
 
 	// Transition condition
-	float testValue02 = 5.0f;
-	FloatCondition floatCdt02{ 0.0f, 10.0f, testValue02 };
+	FloatCondition farCdt{ midRange + epsilon, fInf, &gap };
 
-	Transition fromAttackingToOnGuard01{ &onGuard, &loosingEnemy, &floatCdt02 };
-	fromAttackingToOnGuardTransitions.push_back(&fromAttackingToOnGuard01);
+	Transition fromMidRangeAttackToForward{ &forward, &loosingEnemy, &farCdt };
+	fromMidRangeAttacksToForwardTransitions.push_back(&fromMidRangeAttackToForward);
+	fromMidRangeAttacksToForwardTransitions.erase(fromMidRangeAttacksToForwardTransitions.begin());
 	//^ First transition ========================
-	//^ transition from attacking to onGuard =============
+	//^ transition from midRangeAttack to forward ========
 	// ===============================================================
-	//^ On Guard to Attack ===========================================
+	//v Going forward / mid range attack =============================
 
-	StateMachine stateM{ onGuard };
+	StateMachine stateM{ forward };
 
 	// ===============================================================
 	//^ INIT =========================================================
@@ -176,6 +193,7 @@ int main() {
 		updatePlayer();
 
 		// Boss actions
+		gap -= 1.0f; // <--- fonctionne pour modifier les transitions en jeu, c'est top
 		updateBoss(stateM);
 	}
 
