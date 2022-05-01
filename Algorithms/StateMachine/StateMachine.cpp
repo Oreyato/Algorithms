@@ -26,8 +26,9 @@ std::vector<Action*> StateMachine::update()
 		State* targetState = triggeredTransition->getTargetState();
 
 		vector<Action*> transitActions {triggeredTransition->getActions()};
-		vector<Action*> actions = { targetState->getActions() };
-		actions.insert(std::end(actions), std::begin(transitActions), std::end(transitActions));
+		vector<Action*> targetActions = { targetState->getActions() };
+		vector<Action*> actions = { transitActions };
+		actions.insert(std::end(actions), std::begin(targetActions), std::end(targetActions));
 
 		// Complete the transition and return the action list
 		currentState = *targetState;
