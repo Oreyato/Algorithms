@@ -18,10 +18,10 @@ float epsilon = 0.000001f;
 bool gameEnded = false;
 float gap = 16.0f;
 
-Weapon baseWeapon{"Poing", 0.0f, 0.0f};
-PlayableCharacter player{"Jean Jean", 100.0f, &baseWeapon};
+Weapon baseWeapon{"Poing", 10.0f, 5.0f, 0.0f};
+PlayableCharacter player{"Jean Jean", 100.0f, &baseWeapon, &gap};
 
-Boss boss{ "Rydnir", 5000.0f };
+Boss boss{ "Rydnir", 5000.0f, &gap};
 
 // First phase ==========================
 float midRange = 5.0f;
@@ -124,7 +124,8 @@ int main() {
 	//================================================================
 	//v PLAYER INIT ==================================================
 	//================================================================
-
+	player.setTarget(&boss);
+	boss.setTarget(&player);
 
 
 	//================================================================

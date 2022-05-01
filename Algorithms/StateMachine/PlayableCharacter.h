@@ -9,7 +9,7 @@ class PlayableCharacter :
     public Character
 {
 public:
-    PlayableCharacter(std::string nameP, float maxHealthP, Weapon* currentWeaponP);
+    PlayableCharacter(std::string nameP, float maxHealthP, Weapon* currentWeaponP, float* gapP);
     ~PlayableCharacter() { delete currentWeapon; }
 
     void switchWeapon();
