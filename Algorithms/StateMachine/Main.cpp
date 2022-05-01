@@ -153,7 +153,7 @@ int main() {
 	//v transition from forward to midRangeAttack ========
 	//v First transition ========================
 	// Transition action
-	Action seeEnemy{ "The enemy is close enough" }; // <--- n'a pas l'air de fonctionner ! 
+	Action seeEnemy{ "The enemy is close enough" };
 
 	// Transition condition
 	FloatCondition midDistanceCdt{ closeRange + epsilon, midRange, &gap };
@@ -177,7 +177,20 @@ int main() {
 	//^ First transition ========================
 	//^ transition from midRangeAttack to forward ========
 	// ===============================================================
-	//v Going forward / mid range attack =============================
+	//^ Going forward / mid range attack =============================
+	//v Close range attack ===========================================
+	Action morsure{ "Morsure" };
+
+	vector<Action*> closeRangeAttacksActions;
+	closeRangeAttacksActions.push_back(&griffes);
+	closeRangeAttacksActions.push_back(&ailes);
+	closeRangeAttacksActions.push_back(&queue);
+	closeRangeAttacksActions.push_back(&morsure);
+
+	vector<Transition*> fromMidRangeAttacksToCloseRangeAttacksTransitions;
+
+
+	//^ Close range attack ===========================================
 
 	StateMachine stateM{ forward };
 
