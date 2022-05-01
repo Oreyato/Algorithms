@@ -1,5 +1,7 @@
 #include <iostream>
 #include "StateMachine.h"
+#include "PlayableCharacter.h"
+#include "Boss.h"
 
 using namespace std;
 
@@ -14,7 +16,12 @@ int iInf = 10000;
 float epsilon = 0.000001f;
 
 bool gameEnded = false;
-float gap = 20.0f;
+float gap = 16.0f;
+
+Weapon baseWeapon{"Poing", 0.0f, 0.0f};
+PlayableCharacter player{"Jean Jean", 100.0f, &baseWeapon};
+
+Boss boss{ "Rydnir", 5000.0f };
 
 // First phase ==========================
 float midRange = 5.0f;
@@ -114,10 +121,19 @@ int main() {
 	*/
 	#pragma endregion
 	#pragma region Init
+	//================================================================
+	//v PLAYER INIT ==================================================
+	//================================================================
+
+
+
+	//================================================================
+	//^ PLAYER INIT ==================================================
+	//================================================================
+
 	// ===============================================================
-	//v INIT =========================================================
+	//v FIRST PHASE INIT =============================================
 	// ===============================================================
-	
 	// Forward ==============================
 	Action forwardAction{ "forward" };
 
@@ -200,7 +216,7 @@ int main() {
 	StateMachine stateM{ forwardState };
 
 	// ===============================================================
-	//^ INIT =========================================================
+	//^ FIRST PHASE INIT =============================================
 	// ===============================================================
 	#pragma endregion
 
@@ -211,7 +227,7 @@ int main() {
 		updatePlayer();
 
 		// Boss actions
-		gap -= 2.0f; // <--- fonctionne pour modifier les transitions en jeu, c'est top
+		(gap > 0) ? gap -= 2.0f : gap = 0;
 
 		updateBoss(stateM);
 	}
@@ -220,15 +236,14 @@ int main() {
 }
 
 void updatePlayer() {
-	cout << "Distance: " << gap << endl;
+	cout << player.getName() << " is " << gap  << " steps away from " << boss.getName() << endl;
 
 
 	// While the player can play
 		// Display current condition
 
 		// Let the player choose between actions
-		string tempo;
-		cin >> tempo;
+		player.chooseAction();
 
 		// Do the action
 	// 
