@@ -14,7 +14,7 @@ int iInf = 10000;
 float epsilon = 0.000001f;
 
 bool gameEnded = false;
-float gap = 10.0f;
+float gap = 20.0f;
 
 // First phase ==========================
 float midRange = 5.0f;
@@ -211,7 +211,7 @@ int main() {
 		updatePlayer();
 
 		// Boss actions
-		gap -= 1.0f; // <--- fonctionne pour modifier les transitions en jeu, c'est top
+		gap -= 2.0f; // <--- fonctionne pour modifier les transitions en jeu, c'est top
 
 		updateBoss(stateM);
 	}
@@ -220,6 +220,8 @@ int main() {
 }
 
 void updatePlayer() {
+	cout << "Distance: " << gap << endl;
+
 
 	// While the player can play
 		// Display current condition
