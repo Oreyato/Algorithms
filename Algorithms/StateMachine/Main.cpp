@@ -136,17 +136,9 @@ int main() {
 	midRangeAttacksActions.push_back(&ailes);
 	midRangeAttacksActions.push_back(&queue);
 	//v transitions ==================================================
-	// =====
-	Action placeholderAction{ "placeholder" };
-	IntCondition placeholderCondition{0, 5, 3};
-	Transition placeholderTransition{ &placeholderAction, &placeholderCondition };
-	// je dois me débarrasser de ce code qui pose problème ! - d'autant que les actions de transition semblent ne pas être prises en compte et ça ça degz
-	// =====
 
 	vector<Transition*> fromForwardToMidRangeAttacksTransitions;
-	fromForwardToMidRangeAttacksTransitions.push_back(&placeholderTransition);
 	vector<Transition*> fromMidRangeAttacksToForwardTransitions;
-	fromMidRangeAttacksToForwardTransitions.push_back(&placeholderTransition);
 
 	State forward{ &forwardActions,  &fromForwardToMidRangeAttacksTransitions };
 	State midRangeAttack{ &midRangeAttacksActions, &fromMidRangeAttacksToForwardTransitions };
@@ -160,7 +152,6 @@ int main() {
 
 	Transition fromForwardToMidRangeAttack{ &midRangeAttack, &seeEnemy, &midDistanceCdt };
 	fromForwardToMidRangeAttacksTransitions.push_back(&fromForwardToMidRangeAttack);
-	fromForwardToMidRangeAttacksTransitions.erase(fromForwardToMidRangeAttacksTransitions.begin());
 	//^ First transition ========================
 	//^ transition from forward to midRangeAttack ========
 	//v transition from midRangeAttack to forward ========
@@ -173,7 +164,6 @@ int main() {
 
 	Transition fromMidRangeAttackToForward{ &forward, &loosingEnemy, &farCdt };
 	fromMidRangeAttacksToForwardTransitions.push_back(&fromMidRangeAttackToForward);
-	fromMidRangeAttacksToForwardTransitions.erase(fromMidRangeAttacksToForwardTransitions.begin());
 	//^ First transition ========================
 	//^ transition from midRangeAttack to forward ========
 	// ===============================================================
