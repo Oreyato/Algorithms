@@ -3,10 +3,19 @@
 
 using namespace std;
 
-StateMachine initFirstPhase();
+//v Functions ====================================================
+void updatePlayer();
+void updateBoss(StateMachine& smP);
+
+//^ Functions ====================================================
+//v Variables ====================================================
+bool gameEnded = false;
+//^ Variables ====================================================
+
+
 
 int main() {	
-#pragma region Prev Example
+	#pragma region Prev Example
 	/*
 	//v On Guard to Attack ===========================================
 	//v onGuard ======================================================
@@ -91,14 +100,12 @@ int main() {
 	actions = stateMachineTest.update();
 	stateMachineTest.executeActions(actions);
 	*/
-#pragma endregion
-
-	StateMachine init = initFirstPhase();
-
-	return 0;
-}
-
-StateMachine initFirstPhase() {
+	#pragma endregion
+	#pragma region Init
+	// ===============================================================
+	//v INIT =========================================================
+	// ===============================================================
+	
 	//v On Guard to Attack ===========================================
 	//v onGuard ======================================================
 	Action onGuard01{ "onGuard" };
@@ -155,19 +162,37 @@ StateMachine initFirstPhase() {
 	// ===============================================================
 	//^ On Guard to Attack ===========================================
 
-	StateMachine stateMachineTest{ onGuard };
+	StateMachine stateM{ onGuard };
 
-	vector<Action*> actions = stateMachineTest.update();
-	stateMachineTest.executeActions(actions);
-	actions = stateMachineTest.update();
-	stateMachineTest.executeActions(actions);
-	actions = stateMachineTest.update();
-	stateMachineTest.executeActions(actions);
-	actions = stateMachineTest.update();
-	stateMachineTest.executeActions(actions);
-	actions = stateMachineTest.update();
-	stateMachineTest.executeActions(actions);
+	// ===============================================================
+	//^ INIT =========================================================
+	// ===============================================================
+	#pragma endregion
 
+	while (!gameEnded)
+	{
+		// Player actions
+		// Player actions
+		updatePlayer();
 
-	return stateMachineTest;
+		// Boss actions
+		updateBoss(stateM);
+	}
+
+	return 0;
+}
+
+void updatePlayer() {
+	// While the player can play
+		// Display current condition
+
+		// Let the player choose between actions
+
+		// Do the action
+	// 
+}
+
+void updateBoss(StateMachine& smP) {
+	vector<Action*> actions = smP.update();
+	smP.executeActions(actions);
 }
