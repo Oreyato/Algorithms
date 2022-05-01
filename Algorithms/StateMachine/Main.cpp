@@ -128,7 +128,7 @@ int main() {
 	//v mid range attacks ============================================
 	Action griffes{ "Griffes" };
 	Action ailes{ "Ailes" };
-	Action queue{ "queue" };
+	Action queue{ "Queue" };
 
 	vector<Action*> midRangeAttacksActions;
 
@@ -148,8 +148,8 @@ int main() {
 	vector<Transition*> fromMidRangeAttacksToForwardTransitions;
 	fromMidRangeAttacksToForwardTransitions.push_back(&placeholderTransition);
 
-	State forward{ forwardActions,  &fromForwardToMidRangeAttacksTransitions };
-	State midRangeAttack{ midRangeAttacksActions, &fromMidRangeAttacksToForwardTransitions };
+	State forward{ &forwardActions,  &fromForwardToMidRangeAttacksTransitions };
+	State midRangeAttack{ &midRangeAttacksActions, &fromMidRangeAttacksToForwardTransitions };
 	//v transition from forward to midRangeAttack ========
 	//v First transition ========================
 	// Transition action

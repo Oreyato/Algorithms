@@ -5,16 +5,16 @@
 class State
 {
 public:
-	State(std::vector<Action*>& actionsP, std::vector<Transition*>* transitionsP);
+	State(std::vector<Action*>* actionsP, std::vector<Transition*>* transitionsP);
 
 	void execute();
 
-	const std::vector<Action*> getActions() { return actions; }
+	const std::vector<Action*> getActions() { return *actions; }
 
 	const std::vector<Transition*> getTransitions() { return *transitions; }
 
 private:
-	std::vector<Action*> actions{ nullptr };
+	std::vector<Action*>* actions{ nullptr };
 
 	std::vector<Transition*>* transitions{ nullptr };
 };
