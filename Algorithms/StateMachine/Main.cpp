@@ -118,15 +118,14 @@ int main() {
 	//v INIT =========================================================
 	// ===============================================================
 	
-	//v Going forward / mid range attack =============================
-	//v Forward ======================================================
+	// Forward ==============================
 	Action forwardAction{ "forward" };
 
 	vector<Action*> forwardActions;
 
 	forwardActions.push_back(&forwardAction);
-	//v mid range attacks ============================================
-	Action griffes{ "Griffes" };
+	// Mid range attacks ====================
+	Action griffes{ "Griffes" }; // <--- TEMP
 	Action ailes{ "Ailes" };
 	Action queue{ "Queue" };
 
@@ -135,41 +134,9 @@ int main() {
 	midRangeAttacksActions.push_back(&griffes);
 	midRangeAttacksActions.push_back(&ailes);
 	midRangeAttacksActions.push_back(&queue);
-	//v transitions ==================================================
 
-	vector<Transition*> fromForwardToMidRangeAttacksTransitions;
-	vector<Transition*> fromMidRangeAttacksToForwardTransitions;
-
-	State forward{ &forwardActions,  &fromForwardToMidRangeAttacksTransitions };
-	State midRangeAttack{ &midRangeAttacksActions, &fromMidRangeAttacksToForwardTransitions };
-	//v transition from forward to midRangeAttack ========
-	//v First transition ========================
-	// Transition action
-	Action seeEnemy{ "The enemy is close enough" };
-
-	// Transition condition
-	FloatCondition midDistanceCdt{ closeRange + epsilon, midRange, &gap };
-
-	Transition fromForwardToMidRangeAttack{ &midRangeAttack, &seeEnemy, &midDistanceCdt };
-	fromForwardToMidRangeAttacksTransitions.push_back(&fromForwardToMidRangeAttack);
-	//^ First transition ========================
-	//^ transition from forward to midRangeAttack ========
-	//v transition from midRangeAttack to forward ========
-	//v First transition ========================
-	// Transition action
-	Action loosingEnemy{ "The enemy is too far!" };
-
-	// Transition condition
-	FloatCondition farCdt{ midRange + epsilon, fInf, &gap };
-
-	Transition fromMidRangeAttackToForward{ &forward, &loosingEnemy, &farCdt };
-	fromMidRangeAttacksToForwardTransitions.push_back(&fromMidRangeAttackToForward);
-	//^ First transition ========================
-	//^ transition from midRangeAttack to forward ========
-	// ===============================================================
-	//^ Going forward / mid range attack =============================
-	//v Close range attack ===========================================
-	Action morsure{ "Morsure" };
+	// Close range attacks ==================
+	Action morsure{ "Morsure" }; // <--- TEMP AUSSI
 
 	vector<Action*> closeRangeAttacksActions;
 	closeRangeAttacksActions.push_back(&griffes);
@@ -177,12 +144,60 @@ int main() {
 	closeRangeAttacksActions.push_back(&queue);
 	closeRangeAttacksActions.push_back(&morsure);
 
-	vector<Transition*> fromMidRangeAttacksToCloseRangeAttacksTransitions;
+	// States and transitions init ==========
+	vector<Transition*> forwardOutTransitions;
+	vector<Transition*> midRangeAttacksOutTransitions;
+	vector<Transition*> closeRangeAttacksOutTransitions;
 
+	State forwardState{ &forwardActions,  &forwardOutTransitions };
+	State midRangeState{ &midRangeAttacksActions, &midRangeAttacksOutTransitions };
+	State closeRangeState{ &closeRangeAttacksActions, &closeRangeAttacksOutTransitions };
 
-	//^ Close range attack ===========================================
+	//v Filling transitions ==========================================
+	// Forward transitions ==================
+	// Transition from forward to midRangeAttack 
+	// Transition action
+	Action seeEnemy{ "The enemy is close enough" };
 
-	StateMachine stateM{ forward };
+	// Transition condition
+	FloatCondition midDistanceCdt{ closeRange + epsilon, midRange, &gap };
+
+	Transition fromForwardToMidRangeAttack{ &midRangeState, &seeEnemy, &midDistanceCdt };
+	forwardOutTransitions.push_back(&fromForwardToMidRangeAttack);
+	// Transition from forward to closeRangeAttack 
+	Action closeToEnemy{ "I'm right next to the enemy" };
+
+	FloatCondition closeDistanceCdt{ 0.0f, closeRange, &gap };
+
+	Transition fromForwardToCloseRangeAttack{ &closeRangeState, &closeToEnemy, &closeDistanceCdt };
+	forwardOutTransitions.push_back(&fromForwardToCloseRangeAttack);
+	
+	// MidRange attack transitions ==========
+	// Transition from midRangeAttack to forward 
+	Action loosingEnemy{ "The enemy is too far!" };
+
+	FloatCondition farCdt{ midRange + epsilon, fInf, &gap };
+
+	Transition fromMidRangeAttackToForward{ &forwardState, &loosingEnemy, &farCdt };
+	midRangeAttacksOutTransitions.push_back(&fromMidRangeAttackToForward);
+	
+	// Transition from midRangeAttack to close range
+	Transition fromMidRangeAttackToCloseRangeAttack{ &closeRangeState, &closeToEnemy, &closeDistanceCdt };
+	midRangeAttacksOutTransitions.push_back(&fromMidRangeAttackToCloseRangeAttack);
+
+	// Close range attack transitions =======
+	// Transition from closeRangeAttack to midRangeAttack
+	Action enemyStepOut{ "The enemy took a few steps away" };
+
+	Transition fromCloseRangeAttackToMidRangeAttack{ &midRangeState, &enemyStepOut, &midDistanceCdt };
+	closeRangeAttacksOutTransitions.push_back(&fromCloseRangeAttackToMidRangeAttack);
+
+	// Transition from closeRangeAttack to forward
+	Transition fromCloseRangeAttackToForward{ &forwardState, &loosingEnemy, &farCdt };
+	closeRangeAttacksOutTransitions.push_back(&fromCloseRangeAttackToForward);
+	//^ Filling transitions ==========================================
+
+	StateMachine stateM{ forwardState };
 
 	// ===============================================================
 	//^ INIT =========================================================
@@ -197,6 +212,7 @@ int main() {
 
 		// Boss actions
 		gap -= 1.0f; // <--- fonctionne pour modifier les transitions en jeu, c'est top
+
 		updateBoss(stateM);
 	}
 
@@ -204,10 +220,13 @@ int main() {
 }
 
 void updatePlayer() {
+
 	// While the player can play
 		// Display current condition
 
 		// Let the player choose between actions
+		string tempo;
+		cin >> tempo;
 
 		// Do the action
 	// 
