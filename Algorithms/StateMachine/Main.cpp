@@ -3,10 +3,11 @@
 
 using namespace std;
 
-
+StateMachine initFirstPhase();
 
 int main() {	
 #pragma region Prev Example
+	/*
 	//v On Guard to Attack ===========================================
 	//v onGuard ======================================================
 	Action onGuardEnter01{ "onGuard entering" };
@@ -89,10 +90,10 @@ int main() {
 	stateMachineTest.executeActions(actions);
 	actions = stateMachineTest.update();
 	stateMachineTest.executeActions(actions);
-
+	*/
 #pragma endregion
 
-	initFirstPhase();
+	StateMachine init = initFirstPhase();
 
 	return 0;
 }
@@ -100,29 +101,17 @@ int main() {
 StateMachine initFirstPhase() {
 	//v On Guard to Attack ===========================================
 	//v onGuard ======================================================
-	Action onGuardEnter01{ "onGuard entering" };
 	Action onGuard01{ "onGuard" };
-	Action onGuardExit01{ "onGuard exiting" };
 
-	vector<Action*> onGuardEntryActions;
 	vector<Action*> onGuardActions;
-	vector<Action*> onGuardExitActions;
 
-	onGuardEntryActions.push_back(&onGuardEnter01);
 	onGuardActions.push_back(&onGuard01);
-	onGuardExitActions.push_back(&onGuardExit01);
 	//v attacking ====================================================
-	Action attackingEnter01{ "attacking entering" };
 	Action attacking01{ "attacking" };
-	Action attackingExit01{ "attacking exiting" };
 
-	vector<Action*> attackEntryActions;
 	vector<Action*> attackActions;
-	vector<Action*> attackExitActions;
 
-	attackEntryActions.push_back(&attackingEnter01);
 	attackActions.push_back(&attacking01);
-	attackExitActions.push_back(&attackingExit01);
 	//v transitions ==================================================
 	// =====
 	Action placeholderAction{ "placeholder" };
@@ -149,9 +138,6 @@ StateMachine initFirstPhase() {
 	Transition fromOnGuardToAttacking01{ &attacking, &seeEnemy, &floatCdt };
 	fromGuardToAttackTransitions.push_back(&fromOnGuardToAttacking01);
 	//^ First transition ========================
-
-	//fromGuardToAttackTransitions[0]->setTargetState(&attacking);
-
 	//^ transition from onGuard to attacking =============
 	//v transition from attacking to onGuard =============
 	//v First transition ========================
@@ -159,15 +145,12 @@ StateMachine initFirstPhase() {
 	Action loosingEnemy{ "I lost the enemy!" };
 
 	// Transition condition
-	float testValue02 = 15.0f;
+	float testValue02 = 5.0f;
 	FloatCondition floatCdt02{ 0.0f, 10.0f, testValue02 };
 
 	Transition fromAttackingToOnGuard01{ &onGuard, &loosingEnemy, &floatCdt02 };
 	fromAttackingToOnGuardTransitions.push_back(&fromAttackingToOnGuard01);
 	//^ First transition ========================
-
-	//fromAttackingToOnGuardTransitions[0]->setTargetState(&onGuard);
-
 	//^ transition from attacking to onGuard =============
 	// ===============================================================
 	//^ On Guard to Attack ===========================================
@@ -175,6 +158,10 @@ StateMachine initFirstPhase() {
 	StateMachine stateMachineTest{ onGuard };
 
 	vector<Action*> actions = stateMachineTest.update();
+	stateMachineTest.executeActions(actions);
+	actions = stateMachineTest.update();
+	stateMachineTest.executeActions(actions);
+	actions = stateMachineTest.update();
 	stateMachineTest.executeActions(actions);
 	actions = stateMachineTest.update();
 	stateMachineTest.executeActions(actions);
