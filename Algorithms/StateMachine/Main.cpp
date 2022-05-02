@@ -127,8 +127,8 @@ int main() {
 	player.setTarget(&boss);
 	boss.setTarget(&player);
 
-	Weapon fleauEnAcier{ "Fléau en acier", 53.f, 3.f, 0.5f };
-	Weapon arbaletePortative{ "Arbalète portative", 51.f, 14.f, 1.5f };
+	Weapon fleauEnAcier{ "Fleau en acier", 53.f, 3.f, 0.5f };
+	Weapon arbaletePortative{ "Arbalete portative", 51.f, 14.f, 1.5f };
 
 	player.addWeapon(&fleauEnAcier);
 	player.addWeapon(&arbaletePortative);

@@ -13,6 +13,8 @@ public:
     ~PlayableCharacter() { delete currentWeapon; }
 
     void addWeapon(Weapon* weaponP) { weapons.push_back(weaponP); }
+    void displayWeapons();
+    bool getWeaponByIndex(float weaponIndex, Weapon* weaponP);
     void switchWeapon();
         
     void setEquippedWeapon(Weapon* targetWeapon) { currentWeapon = targetWeapon; }
