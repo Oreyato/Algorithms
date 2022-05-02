@@ -11,7 +11,8 @@ public:
 		range{rangeP},
 		tokenCost{tokenCostP},
 		missProbability{missProbabilityP}
-	{};
+	{
+	};
 
 	const std::string getName() { return name; }
 	const float getDamage() { return damage; }
