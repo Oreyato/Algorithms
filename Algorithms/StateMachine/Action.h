@@ -7,6 +7,6 @@ public:
 	Action(std::string nameP);
 	void execute();
 
-private:
+protected:
 	std::string name;
 };

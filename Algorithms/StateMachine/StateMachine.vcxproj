@@ -141,10 +141,12 @@
   <ItemGroup>
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="BossAttack.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="FloatCondition.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PlayableCharacter.cpp" />
+    <ClCompile Include="Random.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="Transition.cpp" />
@@ -155,12 +157,14 @@
     <ClInclude Include="Action.h" />
     <ClInclude Include="AndCondition.h" />
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="BossAttack.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="ICondition.h" />
     <ClInclude Include="FloatCondition.h" />
     <ClInclude Include="NotCondition.h" />
     <ClInclude Include="OrCondition.h" />
     <ClInclude Include="PlayableCharacter.h" />
+    <ClInclude Include="Random.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StateMachine.h" />
     <ClInclude Include="Transition.h" />
