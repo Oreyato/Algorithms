@@ -48,15 +48,19 @@ void PlayableCharacter::displayWeapons()
 
 		// Managing range
 		cout << "   | damage: " << damage << "    | range: " << range << "(";
-		
+
 		if (range >= *gap) {
-			cout << "ok";
+			cout << "ok)";
 		}
 		else {
-			cout << range - *gap;
+			float diff = range - *gap;
+
+			cout << diff;
+			if (abs(diff) < 10.0f) cout << ") ";
+			else cout << ")";
 		}
 
-		cout << ")  | token cost: " << tokenCost << endl;
+		cout << "   | token cost: " << tokenCost << endl;
 	}
 }
 
