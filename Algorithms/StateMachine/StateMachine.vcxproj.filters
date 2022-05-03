@@ -9,62 +9,134 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Fichiers d%27en-tête\Conditions.h">
-      <UniqueIdentifier>{73266a4d-e343-4561-ac42-dca9962fb710}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Fichiers d%27en-tête\Actions">
       <UniqueIdentifier>{39de1cb6-fafc-4570-a515-7ef99a4cbb5c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Fichiers sources\Actions">
       <UniqueIdentifier>{5a800add-4e9e-4c32-847d-d3c3a6bc02f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\StateMachineLogic">
+      <UniqueIdentifier>{b589b670-6554-4da8-8d01-81a3d8803d27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\StateMachineLogic\Conditions.h">
+      <UniqueIdentifier>{73266a4d-e343-4561-ac42-dca9962fb710}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\StateMachineLogic">
+      <UniqueIdentifier>{b1cf3498-3654-4926-8428-dbb0dfa15e05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Character">
+      <UniqueIdentifier>{f9a5cd79-5f3c-46bf-9da5-18f45acc32c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Character">
+      <UniqueIdentifier>{2bed41a9-0045-4e83-afa1-49ec11708733}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Utilities">
+      <UniqueIdentifier>{08f7f9a0-e27c-4461-8724-575133cc4b15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Utilities">
+      <UniqueIdentifier>{1c590aa3-7b70-4db1-a86c-39b9970f788a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="StateMachine.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="State.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Transition.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Action.cpp">
       <Filter>Fichiers sources\Actions</Filter>
     </ClCompile>
     <ClCompile Include="FloatCondition.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\StateMachineLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>Fichiers sources\StateMachineLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="Transition.cpp">
+      <Filter>Fichiers sources\StateMachineLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="IntCondition.cpp">
+      <Filter>Fichiers sources\StateMachineLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Fichiers sources\StateMachineLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayableCharacter.cpp">
+      <Filter>Fichiers sources\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>Fichiers sources\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Random.cpp">
+      <Filter>Fichiers sources\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="BossAttack.cpp">
+      <Filter>Fichiers sources\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Fichiers sources\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>Fichiers sources\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="BossMovement.cpp">
+      <Filter>Fichiers sources\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Fichiers sources\Utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="StateMachine.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="State.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Transition.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="ICondition.h">
-      <Filter>Fichiers d%27en-tête\Conditions.h</Filter>
+      <Filter>Fichiers d%27en-tête\StateMachineLogic\Conditions.h</Filter>
     </ClInclude>
     <ClInclude Include="FloatCondition.h">
-      <Filter>Fichiers d%27en-tête\Conditions.h</Filter>
+      <Filter>Fichiers d%27en-tête\StateMachineLogic\Conditions.h</Filter>
     </ClInclude>
     <ClInclude Include="AndCondition.h">
-      <Filter>Fichiers d%27en-tête\Conditions.h</Filter>
+      <Filter>Fichiers d%27en-tête\StateMachineLogic\Conditions.h</Filter>
     </ClInclude>
     <ClInclude Include="NotCondition.h">
-      <Filter>Fichiers d%27en-tête\Conditions.h</Filter>
+      <Filter>Fichiers d%27en-tête\StateMachineLogic\Conditions.h</Filter>
     </ClInclude>
     <ClInclude Include="OrCondition.h">
-      <Filter>Fichiers d%27en-tête\Conditions.h</Filter>
+      <Filter>Fichiers d%27en-tête\StateMachineLogic\Conditions.h</Filter>
     </ClInclude>
     <ClInclude Include="Action.h">
+      <Filter>Fichiers d%27en-tête\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="IntCondition.h">
+      <Filter>Fichiers d%27en-tête\StateMachineLogic\Conditions.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Transition.h">
+      <Filter>Fichiers d%27en-tête\StateMachineLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>Fichiers d%27en-tête\StateMachineLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Fichiers d%27en-tête\StateMachineLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>Fichiers d%27en-tête\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayableCharacter.h">
+      <Filter>Fichiers d%27en-tête\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>Fichiers d%27en-tête\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.h">
+      <Filter>Fichiers d%27en-tête\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="BossAttack.h">
+      <Filter>Fichiers d%27en-tête\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Fichiers d%27en-tête\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Fichiers d%27en-tête\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="BossMovement.h">
       <Filter>Fichiers d%27en-tête\Actions</Filter>
     </ClInclude>
   </ItemGroup>

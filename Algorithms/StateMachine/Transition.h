@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 
+#include "IntCondition.h"
 #include "FloatCondition.h"
 #include "AndCondition.h"
 #include "NotCondition.h"

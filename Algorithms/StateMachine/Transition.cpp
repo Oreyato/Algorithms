@@ -8,6 +8,7 @@ Transition::Transition(Action* actionP, ICondition* conditionP) :
 	action{ actionP },
 	condition{ conditionP }
 {
+	actions.push_back(action);
 }
 
 Transition::Transition(State* targetStateP, Action* actionP, ICondition* conditionP) :
@@ -15,6 +16,7 @@ Transition::Transition(State* targetStateP, Action* actionP, ICondition* conditi
 	action{ actionP },
 	condition{ conditionP }
 {
+	actions.push_back(action);
 }
 
 Transition::Transition(State* targetStateP, std::vector<Action*>& actionsP, ICondition* conditionP) :

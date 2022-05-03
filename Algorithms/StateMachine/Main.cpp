@@ -1,9 +1,43 @@
 #include <iostream>
 #include "StateMachine.h"
+#include "PlayableCharacter.h"
+#include "Boss.h"
 
 using namespace std;
 
+//v Functions ====================================================
+void updatePlayer();
+void updateBoss(StateMachine& smP);
+Action* pickBetween(vector<Action*> attacksP);
+
+//^ Functions ====================================================
+//v Variables ====================================================
+float fInf = 10000.0f;
+int iInf = 10000;
+float epsilon = 0.000001f;
+
+bool gameEnded = false;
+float gap = 16.0f;
+float token = 0.0f;
+
+Weapon grandeHacheDouble{"Grande hache double", 67.f, 5.0f, 1.0f};
+PlayableCharacter player{"Jean Jean", 625.0f, &grandeHacheDouble, &gap, &token};
+
+Boss boss{ "Rydnir", 4000.0f, &gap};
+
+// First phase ==========================
+float midRange = 6.0f;
+float closeRange = 4.0f;
+
+// Second phase =========================
+
+//^ Variables ====================================================
+
+
+
 int main() {	
+	#pragma region Prev Example
+	/*
 	//v On Guard to Attack ===========================================
 	//v onGuard ======================================================
 	Action onGuardEnter01{ "onGuard entering" };
@@ -86,6 +120,200 @@ int main() {
 	stateMachineTest.executeActions(actions);
 	actions = stateMachineTest.update();
 	stateMachineTest.executeActions(actions);
+	*/
+	#pragma endregion
+	#pragma region Init
+	//================================================================
+	//v PLAYER INIT ==================================================
+	//================================================================
+	player.setTarget(&boss);
+	boss.setTarget(&player);
+
+	Weapon fleauEnAcier{ "Fleau en acier", 53.f, 3.f, 0.5f };
+	Weapon arbaletePortative{ "Arbalete portative", 51.f, 14.f, 1.5f };
+
+	player.addWeapon(&fleauEnAcier);
+	player.addWeapon(&arbaletePortative);
+
+	//================================================================
+	//^ PLAYER INIT ==================================================
+	//================================================================
+
+	// ===============================================================
+	//v FIRST PHASE INIT =============================================
+	// ===============================================================
+	// Forward ==============================
+	// Action forwardAction{ "forward" };
+	BossMovement forwardAction{ "forward", 2.0f, true, &gap, 1.5f, &token};
+
+	vector<Action*> forwardActions;
+
+	forwardActions.push_back(&forwardAction);
+	// Mid range attacks ====================
+	/*
+	Action griffes{ "Griffes" }; // <--- TEMP
+	Action ailes{ "Ailes" };
+	Action queue{ "Queue" };
+	*/
+
+	// name, damage, tokenCost, pickProb, missProb
+	BossAttack griffes{ "laceration de griffes", 45.0f, 1.0f, 0.4f, 0.05f, &player };
+	BossAttack ailes{ "coup d'ailes", 40.f, 2.0f, 0.3f, 0.05f, &player };
+	BossAttack queue{ "balayage", 47.f, 2.5f, 0.3f, 0.1f, &player };
+
+	vector<Action*> midRangeAttacksActions;
+
+	midRangeAttacksActions.push_back(&griffes);
+	midRangeAttacksActions.push_back(&ailes);
+	midRangeAttacksActions.push_back(&queue);
+
+	// Close range attacks ==================
+	BossAttack morsure{ "morsure", 55.f, 1.5f, 0.2f, 0.2f, &player };
+	BossAttack altGriffes = griffes;
+	altGriffes.setPickProbability(0.3f);
+	BossAttack altAiles = ailes;
+	ailes.setPickProbability(0.25f);
+	BossAttack altQueue = queue;
+	altQueue.setPickProbability(0.25f);
+
+	vector<Action*> closeRangeAttacksActions;
+	closeRangeAttacksActions.push_back(&altGriffes);
+	closeRangeAttacksActions.push_back(&altAiles);
+	closeRangeAttacksActions.push_back(&altQueue);
+	closeRangeAttacksActions.push_back(&morsure);
+
+	// States and transitions init ==========
+	vector<Transition*> forwardOutTransitions;
+	vector<Transition*> midRangeAttacksOutTransitions;
+	vector<Transition*> closeRangeAttacksOutTransitions;
+
+	State forwardState{ &forwardActions,  &forwardOutTransitions };
+	State midRangeState{ &midRangeAttacksActions, &midRangeAttacksOutTransitions };
+	State closeRangeState{ &closeRangeAttacksActions, &closeRangeAttacksOutTransitions };
+
+	//v Filling transitions ==========================================
+	// Forward transitions ==================
+	// Transition from forward to midRangeAttack 
+	// Transition action
+	Action seeEnemy{ boss.getName() + " is close to you" };
+
+	// Transition condition
+	FloatCondition midDistanceCdt{ closeRange + epsilon, midRange, &gap };
+
+	Transition fromForwardToMidRangeAttack{ &midRangeState, &seeEnemy, &midDistanceCdt };
+	forwardOutTransitions.push_back(&fromForwardToMidRangeAttack);
+	// Transition from forward to closeRangeAttack 
+	Action closeToEnemy{ boss.getName() + " is right next to you" };
+
+	FloatCondition closeDistanceCdt{ 0.0f, closeRange, &gap };
+
+	Transition fromForwardToCloseRangeAttack{ &closeRangeState, &closeToEnemy, &closeDistanceCdt };
+	forwardOutTransitions.push_back(&fromForwardToCloseRangeAttack);
+	
+	// MidRange attack transitions ==========
+	// Transition from midRangeAttack to forward 
+	Action loosingEnemy{ boss.getName() + " can't reach you here" };
+
+	FloatCondition farCdt{ midRange + epsilon, fInf, &gap };
+
+	Transition fromMidRangeAttackToForward{ &forwardState, &loosingEnemy, &farCdt };
+	midRangeAttacksOutTransitions.push_back(&fromMidRangeAttackToForward);
+	
+	// Transition from midRangeAttack to close range
+	Transition fromMidRangeAttackToCloseRangeAttack{ &closeRangeState, &closeToEnemy, &closeDistanceCdt };
+	midRangeAttacksOutTransitions.push_back(&fromMidRangeAttackToCloseRangeAttack);
+
+	// Close range attack transitions =======
+	// Transition from closeRangeAttack to midRangeAttack
+	Action enemyStepOut{ boss.getName() + " is not right next to you anymore" };
+
+	Transition fromCloseRangeAttackToMidRangeAttack{ &midRangeState, &enemyStepOut, &midDistanceCdt };
+	closeRangeAttacksOutTransitions.push_back(&fromCloseRangeAttackToMidRangeAttack);
+
+	// Transition from closeRangeAttack to forward
+	Transition fromCloseRangeAttackToForward{ &forwardState, &loosingEnemy, &farCdt };
+	closeRangeAttacksOutTransitions.push_back(&fromCloseRangeAttackToForward);
+	//^ Filling transitions ==========================================
+
+	StateMachine stateM{ forwardState };
+
+	// ===============================================================
+	//^ FIRST PHASE INIT =============================================
+	// ===============================================================
+	#pragma endregion
+
+	while (!gameEnded)
+	{
+		updateBoss(stateM);
+
+		// Player actions2
+		updatePlayer();
+	}
 
 	return 0;
+}
+
+void updateBoss(StateMachine& smP) {
+
+	vector<Action*> actions = smP.update();
+	vector<Action*> attacks;
+	vector<Action*> others;
+
+	vector<Action*> singleAttack;
+
+	// Sort actions in two groups
+	for (int i = 0; i < actions.size(); i++)
+	{
+		if (actions[i]->choosable()) {
+			attacks.push_back(actions[i]);
+		}
+		else {
+			others.push_back(actions[i]);
+		}
+	}
+
+	// Execute everything but attacks
+	if (others.size() > 0) smP.executeActions(others);
+
+	// Execute attacks
+	if (attacks.size() > 0) {
+		singleAttack.push_back(pickBetween(attacks));
+
+		smP.executeActions(singleAttack);
+	}
+}
+
+Action* pickBetween(std::vector<Action*> attacksP)
+{
+	int randNum = rand() % 100 + 1;
+	int out = 0;
+
+	float totalPickProb{ 0.0f };
+	
+	for (int i = 0; i < attacksP.size(); i++)
+	{
+		totalPickProb += attacksP[i]->getPickProbability() * 100.0f;
+
+		if (randNum <= totalPickProb)
+		{
+			out = i;
+
+			break;
+		}
+	}
+
+	return attacksP[out];
+}
+
+void updatePlayer() {
+	cout << "\n" << player.getName() << " is " << gap << " steps away from " << boss.getName() << endl;
+
+	// While the player can play
+		// Display current condition
+
+		// Let the player choose between actions
+	player.chooseAction();
+
+	// Do the action
+// 
 }

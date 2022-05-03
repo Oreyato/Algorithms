@@ -2,11 +2,8 @@
 
 using std::vector;
 
-
-State::State(vector<Action*>& entryActionsP, vector<Action*>& actionsP, vector<Action*>& exitActionsP, vector<Transition*>* transitionsP) :
-	entryActions{ entryActionsP },
+State::State(vector<Action*>* actionsP, vector<Transition*>* transitionsP) :
 	actions{ actionsP },
-	exitActions{ exitActionsP },
 	transitions{ transitionsP }
 {
 }
