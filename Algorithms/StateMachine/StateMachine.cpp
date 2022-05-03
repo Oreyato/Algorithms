@@ -26,9 +26,13 @@ std::vector<Action*> StateMachine::update()
 		State* targetState = triggeredTransition->getTargetState();
 
 		vector<Action*> transitActions {triggeredTransition->getActions()};
+		// BREAKING THE PATTERN /!\ =============
+		executeActions(transitActions);
+		// ======================================
+
 		vector<Action*> targetActions = { targetState->getActions() };
-		vector<Action*> actions = { transitActions };
-		actions.insert(std::end(actions), std::begin(targetActions), std::end(targetActions));
+		vector<Action*> actions = { targetActions };
+		// actions.insert(std::end(actions), std::begin(targetActions), std::end(targetActions));
 
 		// Complete the transition and return the action list
 		currentState = *targetState;

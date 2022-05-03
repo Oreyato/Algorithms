@@ -2,6 +2,7 @@
 #include "StateMachine.h"
 #include "PlayableCharacter.h"
 #include "Boss.h"
+#include "Utils.h"
 
 using namespace std;
 
@@ -270,6 +271,20 @@ void updatePlayer() {
 }
 
 void updateBoss(StateMachine& smP) {
+
 	vector<Action*> actions = smP.update();
-	smP.executeActions(actions);
+
+	if (true)
+	{
+		Action* outAction = util::pickBetween(actions);
+
+		vector<Action*> soloAction;
+		soloAction.push_back(outAction);
+
+		smP.executeActions(soloAction);
+	}
+	else {
+		smP.executeActions(actions);
+	}
+
 }

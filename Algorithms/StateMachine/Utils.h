@@ -3,33 +3,15 @@
 #include <stdlib.h>
 #include <vector>
 
-#include "BossAttack.h"
-
 namespace util {
 
 	template <typename T>
-	const T* pickBetween(std::vector<T*> a) {
-		int randNum = rand() % 100 + 1;
-		int out = 0;
-
-		float totalPickProb{ 0.0f };
-
-		for (int i = 0; i < a.size(); i++)
-		{
-			totalPickProb += a[i]->getPickProbability() * 10.0f;
-
-			if (randNum <= totalPickProb)
-			{
-				out = i;
-
-				break;
-			}
-		}
-
-		return a[out];
+	T* pickBetween(std::vector<T*> a) {
+		return a[0];
 	}
+
 	template<>
-	const BossAttack* pickBetween(std::vector<BossAttack*> attackP)
+	BossAttack* pickBetween <BossAttack> (std::vector<BossAttack*> attackP)
 	{
 		int randNum = rand() % 100 + 1;
 		int out = 0;
