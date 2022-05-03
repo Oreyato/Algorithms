@@ -26,103 +26,20 @@ PlayableCharacter player{"Jean Jean", 625.0f, &grandeHacheDouble, &gap, &token};
 Boss boss{ "Rydnir", 4000.0f, &gap};
 
 // First phase ==========================
+float interRange = 10.0f;
 float midRange = 6.0f;
 float closeRange = 4.0f;
 
 // Second phase =========================
+float secondPhaseTrigger = 3200.0f; // <--- 3200.0f
+
+// Third phase ==========================
+float thirdPhaseTrigger = 3400.0f; // <--- 800.0f
 
 //^ Variables ====================================================
 
-
-
 int main() {	
-	#pragma region Prev Example
-	/*
-	//v On Guard to Attack ===========================================
-	//v onGuard ======================================================
-	Action onGuardEnter01{ "onGuard entering" };
-	Action onGuard01{ "onGuard" };
-	Action onGuardExit01{ "onGuard exiting" };
-
-	vector<Action*> onGuardEntryActions;
-	vector<Action*> onGuardActions;
-	vector<Action*> onGuardExitActions;
-
-	onGuardEntryActions.push_back(&onGuardEnter01);
-	onGuardActions.push_back(&onGuard01);
-	onGuardExitActions.push_back(&onGuardExit01);
-	//v attacking ====================================================
-	Action attackingEnter01{ "attacking entering" };
-	Action attacking01{ "attacking" };
-	Action attackingExit01{ "attacking exiting" };
-
-	vector<Action*> attackEntryActions;
-	vector<Action*> attackActions;
-	vector<Action*> attackExitActions;
-
-	attackEntryActions.push_back(&attackingEnter01);
-	attackActions.push_back(&attacking01);
-	attackExitActions.push_back(&attackingExit01);
-	//v transitions ==================================================
-	// =====
-	Action placeholderAction{"placeholder"};
-	FloatCondition placeholderCondition{0.0f, 1.0f, 2.0f};
-	Transition placeholderTransition{&placeholderAction, &placeholderCondition};
-	// =====
-
-	vector<Transition*> fromGuardToAttackTransitions;
-	fromGuardToAttackTransitions.push_back(&placeholderTransition);
-	vector<Transition*> fromAttackingToOnGuardTransitions;
-	fromAttackingToOnGuardTransitions.push_back(&placeholderTransition);
-
-	State onGuard{ onGuardEntryActions, onGuardActions, onGuardExitActions, &fromGuardToAttackTransitions };
-	State attacking{ attackEntryActions, attackActions, attackExitActions, &fromAttackingToOnGuardTransitions };
-	//v transition from onGuard to attacking =============
-	//v First transition ========================
-	// Transition action
-	Action seeEnemy{ "I'm seing an enemy!" };
-
-	// Transition condition
-	float testValue = 5.0f;
-	FloatCondition floatCdt{ 0.0f, 10.0f, testValue };
-
-	Transition fromOnGuardToAttacking01{&attacking, &seeEnemy, &floatCdt };
-	fromGuardToAttackTransitions.push_back(&fromOnGuardToAttacking01);
-	//^ First transition ========================
-
-	//fromGuardToAttackTransitions[0]->setTargetState(&attacking);
-
-	//^ transition from onGuard to attacking =============
-	//v transition from attacking to onGuard =============
-	//v First transition ========================
-	// Transition action
-	Action loosingEnemy{ "I lost the enemy!" };
-
-	// Transition condition
-	float testValue02 = 15.0f;
-	FloatCondition floatCdt02{ 0.0f, 10.0f, testValue02 };
-
-	Transition fromAttackingToOnGuard01{ &onGuard, &loosingEnemy, &floatCdt02 };
-	fromAttackingToOnGuardTransitions.push_back(&fromAttackingToOnGuard01);
-	//^ First transition ========================
-
-	//fromAttackingToOnGuardTransitions[0]->setTargetState(&onGuard);
-	
-	//^ transition from attacking to onGuard =============
-	// ===============================================================
-	//^ On Guard to Attack ===========================================
-
-	StateMachine stateMachineTest{ onGuard };
-	
-	vector<Action*> actions = stateMachineTest.update();
-	stateMachineTest.executeActions(actions);
-	actions = stateMachineTest.update();
-	stateMachineTest.executeActions(actions);
-	actions = stateMachineTest.update();
-	stateMachineTest.executeActions(actions);
-	*/
-	#pragma endregion
-	#pragma region Init
+	#pragma region First phase init
 	//================================================================
 	//v PLAYER INIT ==================================================
 	//================================================================
@@ -143,20 +60,14 @@ int main() {
 	//v FIRST PHASE INIT =============================================
 	// ===============================================================
 	// Forward ==============================
-	// Action forwardAction{ "forward" };
 	BossMovement forwardAction{ "forward", 2.0f, true, &gap, 1.5f, &token};
 
 	vector<Action*> forwardActions;
 
 	forwardActions.push_back(&forwardAction);
 	// Mid range attacks ====================
-	/*
-	Action griffes{ "Griffes" }; // <--- TEMP
-	Action ailes{ "Ailes" };
-	Action queue{ "Queue" };
-	*/
 
-	// name, damage, tokenCost, pickProb, missProb
+	// name, damage, tokenCost, pickProb, missProb, player
 	BossAttack griffes{ "laceration de griffes", 45.0f, 1.0f, 0.4f, 0.05f, &player };
 	BossAttack ailes{ "coup d'ailes", 40.f, 2.0f, 0.3f, 0.05f, &player };
 	BossAttack queue{ "balayage", 47.f, 2.5f, 0.3f, 0.1f, &player };
@@ -241,9 +152,151 @@ int main() {
 	//^ FIRST PHASE INIT =============================================
 	// ===============================================================
 	#pragma endregion
+	#pragma region Third phase init
+	// ===============================================================
+	//v THIRD PHASE INIT =============================================
+	// ===============================================================
+	// Long range ===========================
+	BossAttack souffleTenebreux{ "souffle tenebreux", 35.0f, 5.0f, 1.0f, 0.03f, &player };
 
+	vector<Action*> longRangeOutActions;
+	longRangeOutActions.push_back(&souffleTenebreux);
+
+	vector<Transition*> longRangeOutTransitions;
+	State longRangeState{ &longRangeOutActions,  &longRangeOutTransitions };
+
+	// Interm range =========================
+	BossAttack souffleTenebreuxInter = souffleTenebreux;
+	souffleTenebreuxInter.setPickProbability(0.5f);
+	BossAttack sword{ "sword slash", 50.0f, 3.0f, 0.5f, 0.15f, &player };
+
+	vector<Action*> interRangeOutActions;
+	interRangeOutActions.push_back(&souffleTenebreuxInter);
+	interRangeOutActions.push_back(&sword);
+
+	vector<Transition*> interRangeOutTransitions;
+	State interRangeState{ &longRangeOutActions,  &interRangeOutTransitions };
+
+	// Mid range ============================
+	BossAttack souffleTenebreuxMid = souffleTenebreux;
+	souffleTenebreuxMid.setPickProbability(0.45f);
+	BossAttack explosion("explosion", 250.0f, 7.0f, 0.05f, 0.9f, &player);
+
+	vector<Action*> midRangeOutActions;
+	midRangeOutActions.push_back(&souffleTenebreuxMid);
+	midRangeOutActions.push_back(&sword);
+	midRangeOutActions.push_back(&explosion);
+
+	vector<Transition*> midRangeOutTransitions;
+	State midRangeThirdState{ &longRangeOutActions,  &midRangeOutTransitions };
+
+	// Close range ==========================
+	BossAttack griffesClose = griffes;
+	BossAttack morsureClose = morsure;
+	BossAttack swordClose = sword;
+
+	griffesClose.setPickProbability(0.3f);
+	morsureClose.setPickProbability(0.3f);
+	swordClose.setPickProbability(0.35f);
+
+	vector<Action*> closeRangeOutActions;
+	closeRangeOutActions.push_back(&griffesClose);
+	closeRangeOutActions.push_back(&morsureClose);
+	closeRangeOutActions.push_back(&swordClose);
+	closeRangeOutActions.push_back(&explosion);
+
+	vector<Transition*> closeRangeOutTransitions;
+	State closeRangeThirdState{ &closeRangeOutActions,  &closeRangeOutTransitions };
+
+	#pragma region Filling Transitions
+	//v Filling transitions ==========================================
+	// Transit actions ======================
+	Action toLong{ boss.getName() + " breathe heavily" };
+	Action toInter{ boss.getName() + " is far from you" };
+	Action toMid{ boss.getName() + " is close to you" };
+	Action toClose{ boss.getName() + " is right next to you" };
+
+	// Float conditions =====================
+	FloatCondition longCdt{ interRange + epsilon, fInf, &gap };
+	FloatCondition interCdt{ midRange + epsilon, interRange, &gap };
+	FloatCondition midCdt{ closeRange + epsilon, midRange, &gap };
+	FloatCondition closeCdt{ 0.0f, closeRange, &gap };
+
+	// Long transitions =====================
+	// From long to inter
+	Transition fromLongToInter{ &interRangeState, &toInter, &interCdt };
+	longRangeOutTransitions.push_back(&fromLongToInter);
+
+	// From long to mid
+	Transition fromLongToMid{ &midRangeThirdState, &toMid, &midCdt };
+	longRangeOutTransitions.push_back(&fromLongToMid);
+
+	// From long to close
+	Transition fromLongToClose{ &closeRangeThirdState, &toClose, &closeCdt };
+	longRangeOutTransitions.push_back(&fromLongToClose);
+
+	// Inter transitions ====================
+	// From inter to long
+	Transition fromInterToLong{ &longRangeState, &toLong, &longCdt };
+	interRangeOutTransitions.push_back(&fromInterToLong);
+
+	// From inter to mid
+	Transition fromInterToMid{ &midRangeThirdState, &toMid, &midCdt };
+	interRangeOutTransitions.push_back(&fromInterToMid);
+
+	// From inter to close
+	Transition fromInterToClose{ &closeRangeThirdState, &toClose, &closeCdt };
+	interRangeOutTransitions.push_back(&fromInterToClose);
+
+	// Mid transitions ======================
+	// From mid to long
+	Transition fromMidToLong{ &longRangeState, &toLong, &longCdt };
+	midRangeOutTransitions.push_back(&fromMidToLong);
+
+	// From mid to inter
+	Transition fromMidToInter{ &interRangeState, &toInter, &interCdt };
+	midRangeOutTransitions.push_back(&fromMidToInter);
+
+	// From mid to close
+	Transition fromMidToClose{ &closeRangeThirdState, &toClose, &closeCdt };
+	midRangeOutTransitions.push_back(&fromMidToClose);
+
+	// Close transitions ====================
+	// From close to long
+	Transition fromClosetoLong{ &longRangeState, &toLong, &longCdt };
+	closeRangeOutTransitions.push_back(&fromClosetoLong);
+
+	// From close to inter
+	Transition fromClosetoInter{ &interRangeState, &toInter, &interCdt };
+	closeRangeOutTransitions.push_back(&fromClosetoInter);
+
+	// From close to mid
+	Transition fromClosetoMid{ &midRangeThirdState, &toMid, &midCdt };
+	closeRangeOutTransitions.push_back(&fromClosetoMid);
+	//^ Filling transitions ==========================================  
+	#pragma endregion
+
+	// ===============================================================
+	//^ THIRD PHASE INIT =============================================
+	// ===============================================================
+
+	#pragma endregion
+
+	int currentPhase = 1;
+	
 	while (!gameEnded)
 	{
+		if (currentPhase == 1 /*should be 2 ofc*/ && boss.getHealth() <= thirdPhaseTrigger) {
+			cout << boss.getName() << " dashes out, wounded. Its eyes are filled with rage" << endl;
+			cout << "It rises, like a mountain. And, threatening on its two legs, materializes a sword" << endl;
+			cout << "\nThe last chapter of this fight now begins\n" << endl;
+
+			gap = 9.0f;
+			currentPhase = 3;
+
+			stateM.setCurrentState(midRangeThirdState);
+		}
+
 		updateBoss(stateM);
 
 		// Player actions2
