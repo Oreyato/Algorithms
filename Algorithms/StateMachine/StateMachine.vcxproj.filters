@@ -80,6 +80,9 @@
     <ClCompile Include="BossMovement.cpp">
       <Filter>Fichiers sources\Actions</Filter>
     </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Fichiers sources\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ICondition.h">

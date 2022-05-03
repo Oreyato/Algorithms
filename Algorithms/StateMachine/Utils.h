@@ -9,7 +9,8 @@ namespace util {
 	T* pickBetween(std::vector<T*> a) {
 		return a[0];
 	}
-
+	
+	/*
 	template<>
 	BossAttack* pickBetween <BossAttack> (std::vector<BossAttack*> attackP)
 	{
@@ -32,14 +33,8 @@ namespace util {
 
 		return attackP[out];
 	}
+	*/
 
-	bool success(float missProbP) {
-		int randNum = rand() % 100 + 1;
-		bool successful = true;
-
-		if (randNum > missProbP * 100) {
-			return successful;
-		}
-		else return !successful;
-	}
+	bool success(float missProbP);
+	
 }
