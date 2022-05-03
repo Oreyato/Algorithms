@@ -3,12 +3,13 @@
 
 #include <iostream>
 
-BossAttack::BossAttack(std::string nameP, float damageP, float tokenCostP, float pickP, float missP) :
+BossAttack::BossAttack(std::string nameP, float damageP, float tokenCostP, float pickP, float missP, PlayableCharacter* targetP) :
 	Action{nameP},
 	damage{damageP},
 	tokenCost{tokenCostP},
 	pickProbability{pickP},
-	missProbability{missP}
+	missProbability{missP},
+	target{targetP}
 {
 }
 
@@ -18,10 +19,18 @@ BossAttack::~BossAttack()
 
 void BossAttack::execute()
 {
+	std::cout << "Rydnir uses \"" << name << "\" for " << tokenCost << " token";
+	if (tokenCost > 1.0f) std::cout << "s";
+
+
 	if (util::success(missProbability)) {
-		std::cout << "Rydnir uses, \"" << name << "\" dealing " << damage << " damage" << std::endl;
+		std::cout << std::endl;
+
+		target->hurt(damage);
 	}
 	else {
-		std::cout << "Rydnir misses its attack" << std::endl;
+		std::cout << " but miss" << std::endl;
 	}
+
+	target->addTokens(tokenCost);
 }

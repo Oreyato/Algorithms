@@ -2,13 +2,13 @@
 #include "StateMachine.h"
 #include "PlayableCharacter.h"
 #include "Boss.h"
-#include "Utils.h"
 
 using namespace std;
 
 //v Functions ====================================================
 void updatePlayer();
 void updateBoss(StateMachine& smP);
+Action* pickBetween(vector<Action*> attacksP);
 
 //^ Functions ====================================================
 //v Variables ====================================================
@@ -18,9 +18,10 @@ float epsilon = 0.000001f;
 
 bool gameEnded = false;
 float gap = 16.0f;
+float token = 0.0f;
 
 Weapon grandeHacheDouble{"Grande hache double", 67.f, 5.0f, 1.0f};
-PlayableCharacter player{"Jean Jean", 100.0f, &grandeHacheDouble, &gap};
+PlayableCharacter player{"Jean Jean", 625.0f, &grandeHacheDouble, &gap, &token};
 
 Boss boss{ "Rydnir", 4000.0f, &gap};
 
@@ -143,7 +144,7 @@ int main() {
 	// ===============================================================
 	// Forward ==============================
 	// Action forwardAction{ "forward" };
-	BossMovement forwardAction{ "forward", 2.0f, true, &gap };
+	BossMovement forwardAction{ "forward", 2.0f, true, &gap, 1.5f, &token};
 
 	vector<Action*> forwardActions;
 
@@ -156,9 +157,9 @@ int main() {
 	*/
 
 	// name, damage, tokenCost, pickProb, missProb
-	BossAttack griffes{ "laceration de griffes", 45.0f, 1.0f, 0.4f, 0.05f };
-	BossAttack ailes{ "coup d'ailes", 40.f, 2.0f, 0.3f, 0.05f };
-	BossAttack queue{ "balayage", 47.f, 2.f, 0.3f, 0.1f };
+	BossAttack griffes{ "laceration de griffes", 45.0f, 1.0f, 0.4f, 0.05f, &player };
+	BossAttack ailes{ "coup d'ailes", 40.f, 2.0f, 0.3f, 0.05f, &player };
+	BossAttack queue{ "balayage", 47.f, 2.5f, 0.3f, 0.1f, &player };
 
 	vector<Action*> midRangeAttacksActions;
 
@@ -167,8 +168,7 @@ int main() {
 	midRangeAttacksActions.push_back(&queue);
 
 	// Close range attacks ==================
-	//Action morsure{ "Morsure" }; // <--- TEMP AUSSI
-	BossAttack morsure{ "morsure", 55.f, 1.0f, 0.2f, 0.2f };
+	BossAttack morsure{ "morsure", 55.f, 1.5f, 0.2f, 0.2f, &player };
 	BossAttack altGriffes = griffes;
 	altGriffes.setPickProbability(0.3f);
 	BossAttack altAiles = ailes;
@@ -244,9 +244,6 @@ int main() {
 
 	while (!gameEnded)
 	{
-		// Boss actions
-		(gap > 0) ? gap -= 2.0f : gap = 0;
-
 		updateBoss(stateM);
 
 		// Player actions2
@@ -256,35 +253,67 @@ int main() {
 	return 0;
 }
 
-void updatePlayer() {
-	cout << player.getName() << " is " << gap  << " steps away from " << boss.getName() << endl;
+void updateBoss(StateMachine& smP) {
 
+	vector<Action*> actions = smP.update();
+	vector<Action*> attacks;
+	vector<Action*> others;
+
+	vector<Action*> singleAttack;
+
+	// Sort actions in two groups
+	for (int i = 0; i < actions.size(); i++)
+	{
+		if (actions[i]->choosable()) {
+			attacks.push_back(actions[i]);
+		}
+		else {
+			others.push_back(actions[i]);
+		}
+	}
+
+	// Execute everything but attacks
+	if (others.size() > 0) smP.executeActions(others);
+
+	// Execute attacks
+	if (attacks.size() > 0) {
+		singleAttack.push_back(pickBetween(attacks));
+
+		smP.executeActions(singleAttack);
+	}
+}
+
+Action* pickBetween(std::vector<Action*> attacksP)
+{
+	int randNum = rand() % 100 + 1;
+	int out = 0;
+
+	float totalPickProb{ 0.0f };
+	
+	for (int i = 0; i < attacksP.size(); i++)
+	{
+		totalPickProb += attacksP[i]->getPickProbability() * 100.0f;
+
+		if (randNum <= totalPickProb)
+		{
+			out = i;
+
+			break;
+		}
+	}
+
+	return attacksP[out];
+}
+
+void updatePlayer() {
+	cout << "\n" << player.getName() << " is " << gap << " steps away from " << boss.getName() << endl;
 
 	// While the player can play
 		// Display current condition
 
 		// Let the player choose between actions
-		player.chooseAction();
+	player.chooseAction();
 
-		// Do the action
-	// 
-}
-
-void updateBoss(StateMachine& smP) {
-
-	vector<Action*> actions = smP.update();
-
-	if (true)
-	{
-		Action* outAction = util::pickBetween(actions);
-
-		vector<Action*> soloAction;
-		soloAction.push_back(outAction);
-
-		smP.executeActions(soloAction);
-	}
-	else {
-		smP.executeActions(actions);
-	}
-
+	// Do the action
+// 
 }

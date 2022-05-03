@@ -10,3 +10,8 @@ void Action::execute()
 {
 	std::cout << name << std::endl;
 }
+
+bool Action::choosable()
+{
+	return false;
+}

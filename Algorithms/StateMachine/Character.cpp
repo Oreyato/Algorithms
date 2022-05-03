@@ -11,5 +11,5 @@ void Character::hurt(float damageP) {
 	health -= damageP;
 
 	std::cout << name << " received " << damageP << " damage";
-	std::cout << "\nIt now have " << health << " hp" << std::endl;
+	std::cout << "\nThey now have " << health << " hp" << std::endl;
 }

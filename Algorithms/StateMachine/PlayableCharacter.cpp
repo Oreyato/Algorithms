@@ -2,9 +2,10 @@
 
 using namespace std;
 
-PlayableCharacter::PlayableCharacter(std::string nameP, float maxHealthP, Weapon* currentWeaponP, float* gapP) : 
+PlayableCharacter::PlayableCharacter(std::string nameP, float maxHealthP, Weapon* currentWeaponP, float* gapP, float* tokensP) :
 	Character{ nameP, maxHealthP, gapP },
-	currentWeapon{currentWeaponP}
+	currentWeapon{currentWeaponP},
+	tokens{tokensP}
 {
 	weapons.push_back(currentWeapon);
 }
@@ -45,7 +46,17 @@ void PlayableCharacter::displayWeapons()
 			}
 		}
 
-		cout << "\t| damage: " << damage << " \t| range: " << range << " \t| token cost: " << tokenCost << endl;
+		// Managing range
+		cout << "   | damage: " << damage << "    | range: " << range << "(";
+		
+		if (range >= *gap) {
+			cout << "ok";
+		}
+		else {
+			cout << range - *gap;
+		}
+
+		cout << ")  | token cost: " << tokenCost << endl;
 	}
 }
 
@@ -107,25 +118,23 @@ void PlayableCharacter::setWeapons(std::vector<Weapon*> weaponsP)
 
 void PlayableCharacter::chooseAction()
 {
-	tokens = 2.0f; // <--- TEMP
-
 	bool canAttack = false;
 
 	cout << "==x==x= PLAYER'S TURN =x==x==" << endl;
 	
-	while (tokens > 0.0f) {
+	while (*tokens > 0.0f) {
 		float weaponDamage = currentWeapon->getDamage();
 		float weaponCost = currentWeapon->getTokenCost();
 		canAttack = false;
 
 		cout << "\nWhat would " << name << " do? (enter a number)" << endl;
 
-		if (*gap <= currentWeapon->getRange() && weaponCost <= tokens) {
+		if (*gap <= currentWeapon->getRange() && weaponCost <= *tokens) {
 			canAttack = true;
 
 			cout << "\t1 - ATTACK (" << weaponDamage << " dmg) [" << weaponCost << " t.]" << endl;
 		}
-		else if (weaponCost > tokens) {
+		else if (weaponCost > *tokens) {
 			cout << "\tx - NOT ENOUGH TOKEN TO USE THIS WEAPON" << endl;
 		}
 		else {
@@ -139,7 +148,7 @@ void PlayableCharacter::chooseAction()
 		cout << "\t4 - GO BACKWARD [0,5 t.]" << endl;
 		cout << "\t5 - END TURN (loose remaining tokens)" << endl;
 
-		cout << "\tTOKEN: " << tokens << flush << endl;
+		cout << "\tTOKEN: " << *tokens << flush << endl;
 
 		int decision = -1;
 		cin >> decision;
@@ -159,7 +168,7 @@ void PlayableCharacter::chooseAction()
 					// Attack the dragon
 					target->hurt(weaponDamage);
 
-					tokens -= currentWeapon->getTokenCost();
+					*tokens -= currentWeapon->getTokenCost();
 				}
 				else cout << "You can't use this weapon\nPlease enter a proper number" << endl;
 				cout << "==x==x==x==x==x==x==x==x==x==" << endl;
@@ -179,7 +188,7 @@ void PlayableCharacter::chooseAction()
 				cout << "Current distance: " << *gap << endl;
 				cout << "==x==x==x==x==x==x==x==x==x==" << endl;
 
-				tokens -= 0.5f;
+				*tokens -= 0.5f;
 
 				break;
 
@@ -191,12 +200,12 @@ void PlayableCharacter::chooseAction()
 				cout << "Current distance: " << *gap << endl;
 				cout << "==x==x==x==x==x==x==x==x==x==" << endl;
 
-				tokens -= 0.5f;
+				*tokens -= 0.5f;
 
 				break;
 			
 			case 5:
-				tokens = 0.0f;
+				*tokens = 0.0f;
 				break;
 
 			default:

@@ -9,7 +9,7 @@ class PlayableCharacter :
     public Character
 {
 public:
-    PlayableCharacter(std::string nameP, float maxHealthP, Weapon* currentWeaponP, float* gapP);
+    PlayableCharacter(std::string nameP, float maxHealthP, Weapon* currentWeaponP, float* gapP, float* tokensP);
     ~PlayableCharacter() { delete currentWeapon; }
 
     void addWeapon(Weapon* weaponP) { weapons.push_back(weaponP); }
@@ -20,11 +20,13 @@ public:
     void setEquippedWeapon(Weapon* targetWeapon) { currentWeapon = targetWeapon; }
     void setWeapons(std::vector<Weapon*> weaponsP);
 
+    void addTokens(float valueP) { *tokens += valueP; }
+
     void chooseAction();
 
 private:
     Weapon* currentWeapon{ nullptr };
-    float tokens{ 0.0f };
+    float* tokens{ nullptr };
 
     std::vector<Weapon*> weapons;
 };
