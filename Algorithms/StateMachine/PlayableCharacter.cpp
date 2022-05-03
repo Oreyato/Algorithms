@@ -111,7 +111,7 @@ void PlayableCharacter::chooseAction()
 
 	bool canAttack = false;
 
-	cout << "==x==x== PLAYER TURN ==x==x==" << endl;
+	cout << "==x==x= PLAYER'S TURN =x==x==" << endl;
 	
 	while (tokens > 0.0f) {
 		float weaponDamage = currentWeapon->getDamage();

@@ -1,6 +1,7 @@
 #include <vector>
 #include "Transition.h"
-#include "Action.h"
+#include "BossAttack.h"
+#include "BossMovement.h"
 
 class State
 {

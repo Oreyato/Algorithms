@@ -24,8 +24,8 @@ PlayableCharacter player{"Jean Jean", 100.0f, &grandeHacheDouble, &gap};
 Boss boss{ "Rydnir", 4000.0f, &gap};
 
 // First phase ==========================
-float midRange = 5.0f;
-float closeRange = 3.0f;
+float midRange = 6.0f;
+float closeRange = 4.0f;
 
 // Second phase =========================
 
@@ -141,15 +141,23 @@ int main() {
 	//v FIRST PHASE INIT =============================================
 	// ===============================================================
 	// Forward ==============================
-	Action forwardAction{ "forward" };
+	// Action forwardAction{ "forward" };
+	BossMovement forwardAction{ "forward", 2.0f, true, &gap };
 
 	vector<Action*> forwardActions;
 
 	forwardActions.push_back(&forwardAction);
 	// Mid range attacks ====================
+	/*
 	Action griffes{ "Griffes" }; // <--- TEMP
 	Action ailes{ "Ailes" };
 	Action queue{ "Queue" };
+	*/
+
+	// name, damage, tokenCost, pickProb, missProb
+	BossAttack griffes{ "laceration de griffes", 45.0f, 1.0f, 0.4f, 0.05f };
+	BossAttack ailes{ "coup d'ailes", 40.f, 2.0f, 0.3f, 0.05f };
+	BossAttack queue{ "balayage", 47.f, 2.f, 0.3f, 0.1f };
 
 	vector<Action*> midRangeAttacksActions;
 
@@ -158,12 +166,19 @@ int main() {
 	midRangeAttacksActions.push_back(&queue);
 
 	// Close range attacks ==================
-	Action morsure{ "Morsure" }; // <--- TEMP AUSSI
+	//Action morsure{ "Morsure" }; // <--- TEMP AUSSI
+	BossAttack morsure{ "morsure", 55.f, 1.0f, 0.2f, 0.2f };
+	BossAttack altGriffes = griffes;
+	altGriffes.setPickProbability(0.3f);
+	BossAttack altAiles = ailes;
+	ailes.setPickProbability(0.25f);
+	BossAttack altQueue = queue;
+	altQueue.setPickProbability(0.25f);
 
 	vector<Action*> closeRangeAttacksActions;
-	closeRangeAttacksActions.push_back(&griffes);
-	closeRangeAttacksActions.push_back(&ailes);
-	closeRangeAttacksActions.push_back(&queue);
+	closeRangeAttacksActions.push_back(&altGriffes);
+	closeRangeAttacksActions.push_back(&altAiles);
+	closeRangeAttacksActions.push_back(&altQueue);
 	closeRangeAttacksActions.push_back(&morsure);
 
 	// States and transitions init ==========
@@ -179,7 +194,7 @@ int main() {
 	// Forward transitions ==================
 	// Transition from forward to midRangeAttack 
 	// Transition action
-	Action seeEnemy{ "The enemy is close enough" };
+	Action seeEnemy{ boss.getName() + " is close to you" };
 
 	// Transition condition
 	FloatCondition midDistanceCdt{ closeRange + epsilon, midRange, &gap };
@@ -187,7 +202,7 @@ int main() {
 	Transition fromForwardToMidRangeAttack{ &midRangeState, &seeEnemy, &midDistanceCdt };
 	forwardOutTransitions.push_back(&fromForwardToMidRangeAttack);
 	// Transition from forward to closeRangeAttack 
-	Action closeToEnemy{ "I'm right next to the enemy" };
+	Action closeToEnemy{ boss.getName() + " is right next to you" };
 
 	FloatCondition closeDistanceCdt{ 0.0f, closeRange, &gap };
 
@@ -196,7 +211,7 @@ int main() {
 	
 	// MidRange attack transitions ==========
 	// Transition from midRangeAttack to forward 
-	Action loosingEnemy{ "The enemy is too far!" };
+	Action loosingEnemy{ boss.getName() + " can't reach you here" };
 
 	FloatCondition farCdt{ midRange + epsilon, fInf, &gap };
 
@@ -209,7 +224,7 @@ int main() {
 
 	// Close range attack transitions =======
 	// Transition from closeRangeAttack to midRangeAttack
-	Action enemyStepOut{ "The enemy took a few steps away" };
+	Action enemyStepOut{ boss.getName() + " is not right next to you anymore" };
 
 	Transition fromCloseRangeAttackToMidRangeAttack{ &midRangeState, &enemyStepOut, &midDistanceCdt };
 	closeRangeAttacksOutTransitions.push_back(&fromCloseRangeAttackToMidRangeAttack);
@@ -228,14 +243,13 @@ int main() {
 
 	while (!gameEnded)
 	{
-		// Player actions
-		// Player actions
-		updatePlayer();
-
 		// Boss actions
 		(gap > 0) ? gap -= 2.0f : gap = 0;
 
 		updateBoss(stateM);
+
+		// Player actions2
+		updatePlayer();
 	}
 
 	return 0;

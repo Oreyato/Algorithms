@@ -77,6 +77,9 @@
     <ClCompile Include="Character.cpp">
       <Filter>Fichiers sources\Character</Filter>
     </ClCompile>
+    <ClCompile Include="BossMovement.cpp">
+      <Filter>Fichiers sources\Actions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ICondition.h">
@@ -126,6 +129,12 @@
     </ClInclude>
     <ClInclude Include="Boss.h">
       <Filter>Fichiers d%27en-tête\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Fichiers d%27en-tête\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="BossMovement.h">
+      <Filter>Fichiers d%27en-tête\Actions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
