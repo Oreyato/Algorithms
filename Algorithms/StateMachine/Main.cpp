@@ -35,6 +35,7 @@ Action* pickBetween(vector<Action*> attacksP);
 
 bool playAgain();
 void characterCreation();
+void intro();
 void reset(Save* saveP, StateMachine* stateMP, float* gapP, float* tokenP, PlayableCharacter* playerP, Boss* bossP, int* currentPhaseP);
 
 //^ Functions ====================================================
@@ -317,10 +318,10 @@ int main() {
 	//v NARRATIVE INIT ===============================================
 	//================================================================
 
-	/// TU PEUX METTRE L'INTRO ICI SI TU VEUX L'IMPLEMENTER TOI MEME
-
 	// Changing default name
 	characterCreation();
+	// Intro
+	intro();
 
 	//================================================================
 	//^ NARRATIVE INIT ===============================================
@@ -352,21 +353,33 @@ int main() {
 				updatePlayer();
 			}
 			else {
-				cout << "\n" << player.getName() << ", despite their courage, did not manage to overcome the powerful dragon..." << endl;
+				cout << "\nThe monster was much more powerful than the King expected. If your will is strong enough, you may be reincarnated to fight it again. Do not lose hope Hero." << endl;
 				cout << "\n==x==x== YOU LOSE ==x==x==x==" << endl;
 
-				gameEnded = playAgain();
-				reset(&save, &stateM, &gap, &token, &player, &boss, &currentPhase);
-				characterCreation();
+				if (playAgain()) {
+					reset(&save, &stateM, &gap, &token, &player, &boss, &currentPhase);
+					characterCreation();
+					intro();
+				}
+				else {
+					gameEnded = true;
+				}
 			}
 		}
 		else {
-			cout << "\n" << player.getName() << " eliminated the monstrous dragon. Peace can finally return to the continent" << endl;
+			cout << "\nWell done, " << player.getName() << ". I congratulate you for succeedng in this extremely difficult task." << endl;
+			cout << "Here is a reward. I will call you again in case of danger." << endl;
+			cout << "\nYou just won 100 Golds" << endl;
 			cout << "\n==x==x== CONGRATS ==x==x==x==" << endl;
 		
-			gameEnded = playAgain();
-			reset(&save, &stateM, &gap, &token, &player, &boss, &currentPhase);
-			characterCreation();
+			if (playAgain()) {
+				reset(&save, &stateM, &gap, &token, &player, &boss, &currentPhase);
+				characterCreation();
+				intro();
+			}
+			else {
+				gameEnded = true;
+			}
 		}
 	}
 
@@ -450,10 +463,10 @@ bool playAgain() {
 		}
 		else {
 			if (answer == 1) {
-				return false;
+				return true;
 			}
 			else if (answer == 2) {
-				return true;
+				return false;
 			}
 			else {
 				cout << "Please enter a proper number" << endl;
@@ -477,6 +490,15 @@ void characterCreation() {
 
 	player.setName(playerName);
 	cout << endl;
+}
+
+void intro()
+{
+	cout << "You have been sent by the King to defeat the Dragon hiding in the confines of the kingdom and making terror reign." << endl;
+	cout << "Be careful, he is really powerful. Do not hesitate to use all possible stratagems to face him." << endl;
+	cout << "\nWe count on you " << player.getName() << "!" << endl;
+	cout << "\n==x==x==x==x==x==x==x==x==x==" << endl;
+
 }
 
 void reset(Save* saveP, StateMachine* stateMP, float* gapP, float* tokenP, PlayableCharacter* playerP, Boss* bossP, int* currentPhaseP)
