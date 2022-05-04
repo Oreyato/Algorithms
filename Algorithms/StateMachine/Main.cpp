@@ -47,8 +47,8 @@ bool gameEnded = false;
 float gap = 16.0f;
 float token = 0.0f;
 
-Weapon grandeHacheDouble{"Grande hache double", 67.f, 5.0f, 1.0f};
-PlayableCharacter player{"Jean Jean", 625.0f, &grandeHacheDouble, &gap, &token};
+Weapon bigDoubleAxe{"Big double axe", 67.f, 5.0f, 1.0f};
+PlayableCharacter player{"player", 625.0f, &bigDoubleAxe, &gap, &token};
 
 Boss boss{ "Rydnir", 25.0f, &gap}; // <--- 4000.0f
 
@@ -73,11 +73,11 @@ int main() {
 	player.setTarget(&boss);
 	boss.setTarget(&player);
 
-	Weapon fleauEnAcier{ "Fleau en acier", 53.f, 3.f, 0.5f };
-	Weapon arbaletePortative{ "Arbalete portative", 51.f, 14.f, 1.5f };
+	Weapon steelFlail{ "Steel flail", 53.f, 3.f, 0.5f };
+	Weapon portableCrossbox{ "Portable crossbow", 51.f, 14.f, 1.5f };
 
-	player.addWeapon(&fleauEnAcier);
-	player.addWeapon(&arbaletePortative);
+	player.addWeapon(&steelFlail);
+	player.addWeapon(&portableCrossbox);
 
 	//================================================================
 	//^ PLAYER INIT ==================================================
@@ -96,30 +96,30 @@ int main() {
 	// Mid range attacks ====================
 
 	// name, damage, tokenCost, pickProb, missProb, player
-	BossAttack griffes{ "laceration de griffes", 45.0f, 1.0f, 0.4f, 0.05f, &player };
-	BossAttack ailes{ "coup d'ailes", 40.f, 2.0f, 0.3f, 0.05f, &player };
-	BossAttack queue{ "balayage", 47.f, 2.5f, 0.3f, 0.1f, &player };
+	BossAttack claws{ "claw laceration", 45.0f, 1.0f, 0.4f, 0.05f, &player };
+	BossAttack wings{ "wings hit", 40.f, 2.0f, 0.3f, 0.05f, &player };
+	BossAttack tail{ "sweep", 47.f, 2.5f, 0.3f, 0.1f, &player };
 
 	vector<Action*> midRangeAttacksActions;
 
-	midRangeAttacksActions.push_back(&griffes);
-	midRangeAttacksActions.push_back(&ailes);
-	midRangeAttacksActions.push_back(&queue);
+	midRangeAttacksActions.push_back(&claws);
+	midRangeAttacksActions.push_back(&wings);
+	midRangeAttacksActions.push_back(&tail);
 
 	// Close range attacks ==================
-	BossAttack morsure{ "morsure", 55.f, 1.5f, 0.2f, 0.2f, &player };
-	BossAttack altGriffes = griffes;
-	altGriffes.setPickProbability(0.3f);
-	BossAttack altAiles = ailes;
-	ailes.setPickProbability(0.25f);
-	BossAttack altQueue = queue;
-	altQueue.setPickProbability(0.25f);
+	BossAttack jaw{ "shredding", 55.f, 1.5f, 0.2f, 0.2f, &player };
+	BossAttack altClaws = claws;
+	altClaws.setPickProbability(0.3f);
+	BossAttack altWings = wings;
+	wings.setPickProbability(0.25f);
+	BossAttack altTail = tail;
+	altTail.setPickProbability(0.25f);
 
 	vector<Action*> closeRangeAttacksActions;
-	closeRangeAttacksActions.push_back(&altGriffes);
-	closeRangeAttacksActions.push_back(&altAiles);
-	closeRangeAttacksActions.push_back(&altQueue);
-	closeRangeAttacksActions.push_back(&morsure);
+	closeRangeAttacksActions.push_back(&altClaws);
+	closeRangeAttacksActions.push_back(&altWings);
+	closeRangeAttacksActions.push_back(&altTail);
+	closeRangeAttacksActions.push_back(&jaw);
 
 	// States and transitions init ==========
 	vector<Transition*> forwardOutTransitions;
@@ -185,36 +185,36 @@ int main() {
 	//v THIRD PHASE INIT =============================================
 	// ===============================================================
 	// Long range ===========================
-	BossAttack souffleTenebreux{ "breath", 35.0f, 5.0f, 1.0f, 0.03f, &player };
-	souffleTenebreux.addShadowBonus();
+	BossAttack breath{ "breath", 35.0f, 5.0f, 1.0f, 0.03f, &player };
+	breath.addShadowBonus();
 
 	vector<Action*> longRangeOutActions;
-	longRangeOutActions.push_back(&souffleTenebreux);
+	longRangeOutActions.push_back(&breath);
 
 	vector<Transition*> longRangeOutTransitions;
 	State longRangeState{ &longRangeOutActions,  &longRangeOutTransitions };
 
 	// Interm range =========================
-	BossAttack souffleTenebreuxInter = souffleTenebreux;
-	souffleTenebreuxInter.setPickProbability(0.5f);
+	BossAttack breathInter = breath;
+	breathInter.setPickProbability(0.5f);
 	BossAttack sword{ "sword slash", 50.0f, 3.0f, 0.5f, 0.15f, &player };
 	sword.addShadowBonus();
 
 	vector<Action*> interRangeOutActions;
-	interRangeOutActions.push_back(&souffleTenebreuxInter);
+	interRangeOutActions.push_back(&breathInter);
 	interRangeOutActions.push_back(&sword);
 
 	vector<Transition*> interRangeOutTransitions;
 	State interRangeState{ &interRangeOutActions,  &interRangeOutTransitions };
 
 	// Mid range ============================
-	BossAttack souffleTenebreuxMid = souffleTenebreux;
-	souffleTenebreuxMid.setPickProbability(0.45f);
+	BossAttack breathMid = breath;
+	breathMid.setPickProbability(0.45f);
 	BossAttack explosion("explosion", 250.0f, 7.0f, 0.05f, 0.9f, &player);
 	explosion.addShadowBonus();
 
 	vector<Action*> midRangeOutActions;
-	midRangeOutActions.push_back(&souffleTenebreuxMid);
+	midRangeOutActions.push_back(&breathMid);
 	midRangeOutActions.push_back(&sword);
 	midRangeOutActions.push_back(&explosion);
 
@@ -222,17 +222,17 @@ int main() {
 	State midRangeThirdState{ &midRangeOutActions,  &midRangeOutTransitions };
 
 	// Close range ==========================
-	BossAttack griffesClose = griffes;
-	BossAttack morsureClose = morsure;
+	BossAttack clawsClose = claws;
+	BossAttack jawClose = jaw;
 	BossAttack swordClose = sword;
 
-	griffesClose.setPickProbability(0.3f);
-	morsureClose.setPickProbability(0.3f);
+	clawsClose.setPickProbability(0.3f);
+	jawClose.setPickProbability(0.3f);
 	swordClose.setPickProbability(0.35f);
 
 	vector<Action*> closeRangeOutActions;
-	closeRangeOutActions.push_back(&griffesClose);
-	closeRangeOutActions.push_back(&morsureClose);
+	closeRangeOutActions.push_back(&clawsClose);
+	closeRangeOutActions.push_back(&jawClose);
 	closeRangeOutActions.push_back(&swordClose);
 	closeRangeOutActions.push_back(&explosion);
 
