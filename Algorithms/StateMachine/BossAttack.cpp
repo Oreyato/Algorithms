@@ -17,16 +17,31 @@ BossAttack::~BossAttack()
 {
 }
 
+void BossAttack::addShadowBonus(float bonusP)
+{
+	bonusDamage = bonusP;
+	shadow = true;
+}
+
 void BossAttack::execute()
 {
-	std::cout << "Rydnir uses \"" << name << "\" for " << tokenCost << " token";
+	std::cout << "Rydnir uses \"";
+
+	if (shadow) {
+		std::cout << "shadow ";
+	}
+
+	std::cout << name << "\" for " << tokenCost << " token";
 	if (tokenCost > 1.0f) std::cout << "s";
 
 
 	if (util::success(missProbability)) {
 		std::cout << std::endl;
 
-		target->hurt(damage);
+		if (shadow) {
+			target->hurt(damage + bonusDamage);
+		} 
+		else target->hurt(damage);
 	}
 	else {
 		std::cout << " but misses" << std::endl;

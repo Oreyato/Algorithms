@@ -10,7 +10,6 @@ class PlayableCharacter :
 {
 public:
     PlayableCharacter(std::string nameP, float maxHealthP, Weapon* currentWeaponP, float* gapP, float* tokensP);
-    ~PlayableCharacter() { delete currentWeapon; }
 
     void addWeapon(Weapon* weaponP) { weapons.push_back(weaponP); }
     void displayWeapons();

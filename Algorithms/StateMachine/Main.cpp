@@ -23,7 +23,7 @@ float token = 0.0f;
 Weapon grandeHacheDouble{"Grande hache double", 67.f, 5.0f, 1.0f};
 PlayableCharacter player{"Jean Jean", 625.0f, &grandeHacheDouble, &gap, &token};
 
-Boss boss{ "Rydnir", 3400.0f, &gap}; // <--- 4000.0f
+Boss boss{ "Rydnir", 25.0f, &gap}; // <--- 4000.0f
 
 // First phase ==========================
 float interRange = 10.0f;
@@ -158,7 +158,8 @@ int main() {
 	//v THIRD PHASE INIT =============================================
 	// ===============================================================
 	// Long range ===========================
-	BossAttack souffleTenebreux{ "souffle tenebreux", 35.0f, 5.0f, 1.0f, 0.03f, &player };
+	BossAttack souffleTenebreux{ "breath", 35.0f, 5.0f, 1.0f, 0.03f, &player };
+	souffleTenebreux.addShadowBonus();
 
 	vector<Action*> longRangeOutActions;
 	longRangeOutActions.push_back(&souffleTenebreux);
@@ -170,6 +171,7 @@ int main() {
 	BossAttack souffleTenebreuxInter = souffleTenebreux;
 	souffleTenebreuxInter.setPickProbability(0.5f);
 	BossAttack sword{ "sword slash", 50.0f, 3.0f, 0.5f, 0.15f, &player };
+	sword.addShadowBonus();
 
 	vector<Action*> interRangeOutActions;
 	interRangeOutActions.push_back(&souffleTenebreuxInter);
@@ -182,6 +184,7 @@ int main() {
 	BossAttack souffleTenebreuxMid = souffleTenebreux;
 	souffleTenebreuxMid.setPickProbability(0.45f);
 	BossAttack explosion("explosion", 250.0f, 7.0f, 0.05f, 0.9f, &player);
+	explosion.addShadowBonus();
 
 	vector<Action*> midRangeOutActions;
 	midRangeOutActions.push_back(&souffleTenebreuxMid);
@@ -298,11 +301,26 @@ int main() {
 			stateM.setCurrentState(midRangeThirdState);
 		}
 
+		if (!boss.getDeathStatus())
+		{
+			updateBoss(stateM);
 
-		updateBoss(stateM);
+			if (!player.getDeathStatus()) {
+				updatePlayer();
+			}
+			else {
+				cout << "\n" << player.getName() << ", despite their courage, did not manage to overcome the powerful dragon..." << endl;
+				cout << "\n==x==x== YOU LOSE ==x==x==x==" << endl;
 
-		// Player actions2
-		updatePlayer();
+				gameEnded = true;
+			}
+		}
+		else {
+			cout << "\n" << player.getName() << " eliminated the monstrous dragon. Peace can finally return to the continent" << endl;
+			cout << "\n==x==x== CONGRATS ==x==x==x==" << endl;
+		
+			gameEnded = true;
+		}
 	}
 
 	return 0;

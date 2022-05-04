@@ -10,6 +10,13 @@ Character::Character(std::string nameP, float maxHealthP, float* gapP) :
 void Character::hurt(float damageP) {
 	health -= damageP;
 
-	std::cout << name << " received " << damageP << " damage";
-	std::cout << "\nThey now have " << health << " hp" << std::endl;
+	if (health <= 0.0f) {
+		kill();
+		std::cout << name << " received " << damageP << " damage" << std::endl;
+		std::cout << name << " was defeated" << std::endl;
+	}
+	else {
+		std::cout << name << " received " << damageP << " damage";
+		std::cout << "\nThey now have " << health << " hp" << std::endl;
+	}
 }

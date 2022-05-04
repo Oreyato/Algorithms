@@ -14,7 +14,9 @@ public:
     const float getPickProbability() override { return pickProbability; }
     const float getMissProbability() { return missProbability; }
 
+    void addShadowBonus(float bonusP = 15.0f);
     void setPickProbability(float pickProbabilityP) { pickProbability = pickProbabilityP; }
+
     void execute() override;
     bool choosable() override { return true; }
 
@@ -23,6 +25,9 @@ private:
     float tokenCost{ 0.0f };
     float pickProbability{ 0.0f };
     float missProbability{ 0.0f };
+
+    float bonusDamage{ 0.0f };
+    bool shadow{ false };
 
     PlayableCharacter* target;
 };

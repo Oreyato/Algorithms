@@ -126,7 +126,7 @@ void PlayableCharacter::chooseAction()
 
 	cout << "==x==x= PLAYER'S TURN =x==x==" << endl;
 	
-	while (*tokens > 0.0f && !isDead) {
+	while (*tokens > 0.0f && !target->getDeathStatus()) {
 		float weaponDamage = currentWeapon->getDamage();
 		float weaponCost = currentWeapon->getTokenCost();
 		canAttack = false;
