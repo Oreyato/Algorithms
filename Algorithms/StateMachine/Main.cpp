@@ -48,10 +48,10 @@ bool gameEnded = false;
 float gap = 16.0f;
 float token = 0.0f;
 
-Weapon bigDoubleAxe{"Big double axe", 67.f, 5.0f, 1.0f};
+Weapon bigDoubleAxe{"Big double axe", 97.f, 5.0f, 1.0f};
 PlayableCharacter player{"player", 625.0f, &bigDoubleAxe, &gap, &token};
 
-Boss boss{ "Rydnir", 25.0f, &gap}; // <--- 4000.0f
+Boss boss{ "Rydnir", 3000.0f, &gap}; // <--- 4000.0f
 
 // First phase ==========================
 float interRange = 10.0f;
@@ -59,10 +59,10 @@ float midRange = 6.0f;
 float closeRange = 4.0f;
 
 // Second phase =========================
-float secondPhaseTrigger = 3200.0f; // <--- 3200.0f
+float secondPhaseTrigger = 2000.0f; // <--- 3200.0f
 
 // Third phase ==========================
-float thirdPhaseTrigger = 3400.0f; // <--- 800.0f
+float thirdPhaseTrigger = 1600.0f; // <--- 800.0f
 
 //^ Variables ====================================================
 
