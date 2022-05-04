@@ -5,10 +5,37 @@
 
 using namespace std;
 
+struct Save
+{
+	Save(float gapP, float tokenP, PlayableCharacter playerP, Boss bossP, State initStateP, int currentPhaseP) :
+		gap{ gapP },
+		token{ tokenP },
+		player{ playerP },
+		boss{ bossP },
+		initState{ initStateP },
+		currentPhase{ currentPhaseP }
+	{}
+
+
+	float gap{ 0.0f };
+	float token{ 0.0f };
+
+	PlayableCharacter player;
+	Boss boss;
+
+	State initState;
+
+	int currentPhase{ 0 };
+};
+
 //v Functions ====================================================
 void updatePlayer();
 void updateBoss(StateMachine& smP);
 Action* pickBetween(vector<Action*> attacksP);
+
+bool playAgain();
+void characterCreation();
+void reset(Save* saveP, StateMachine* stateMP, float* gapP, float* tokenP, PlayableCharacter* playerP, Boss* bossP, int* currentPhaseP);
 
 //^ Functions ====================================================
 //v Variables ====================================================
@@ -39,7 +66,7 @@ float thirdPhaseTrigger = 3400.0f; // <--- 800.0f
 //^ Variables ====================================================
 
 int main() {	
-	
+
 	//================================================================
 	//v PLAYER INIT ==================================================
 	//================================================================
@@ -286,7 +313,23 @@ int main() {
 
 	#pragma endregion
 
+	//================================================================
+	//v NARRATIVE INIT ===============================================
+	//================================================================
+
+	/// TU PEUX METTRE L'INTRO ICI SI TU VEUX L'IMPLEMENTER TOI MEME
+
+	// Changing default name
+	characterCreation();
+
+	//================================================================
+	//^ NARRATIVE INIT ===============================================
+	//================================================================
+
 	int currentPhase = 1;
+
+	// Save(float gapP, float tokenP, PlayableCharacter playerP, Boss bossP, State initStateP, int currentPhaseP)
+	Save save{ gap, token, player, boss, forwardState, currentPhase };
 	
 	while (!gameEnded)
 	{
@@ -312,14 +355,18 @@ int main() {
 				cout << "\n" << player.getName() << ", despite their courage, did not manage to overcome the powerful dragon..." << endl;
 				cout << "\n==x==x== YOU LOSE ==x==x==x==" << endl;
 
-				gameEnded = true;
+				gameEnded = playAgain();
+				reset(&save, &stateM, &gap, &token, &player, &boss, &currentPhase);
+				characterCreation();
 			}
 		}
 		else {
 			cout << "\n" << player.getName() << " eliminated the monstrous dragon. Peace can finally return to the continent" << endl;
 			cout << "\n==x==x== CONGRATS ==x==x==x==" << endl;
 		
-			gameEnded = true;
+			gameEnded = playAgain();
+			reset(&save, &stateM, &gap, &token, &player, &boss, &currentPhase);
+			characterCreation();
 		}
 	}
 
@@ -382,4 +429,62 @@ void updatePlayer() {
 	cout << "\n" << player.getName() << " is " << gap << " steps away from " << boss.getName() << endl;
 
 	player.chooseAction();
+}
+
+bool playAgain() {
+	bool isChoosing = true;
+
+	while (isChoosing) {
+		cout << "Do you want to play again?" << endl;
+		cout << "\t1 - Yes" << endl;
+		cout << "\t2 - No" << endl;
+
+		float answer = -1;
+		cin >> answer;
+
+		if (cin.fail() == 1) {
+			cin.clear();
+			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			cout << "Please enter a number" << endl;
+			continue;
+		}
+		else {
+			if (answer == 1) {
+				return false;
+			}
+			else if (answer == 2) {
+				return true;
+			}
+			else {
+				cout << "Please enter a proper number" << endl;
+			}
+		}
+	}
+
+	return false;
+}
+
+void characterCreation() {
+	string playerName;
+	cout << "Enter character's name: ";
+	
+	// cin >> playerName;
+	getline(cin, playerName);
+	while (playerName.length() == 0)
+	{
+		getline(cin, playerName);
+	}
+
+	player.setName(playerName);
+	cout << endl;
+}
+
+void reset(Save* saveP, StateMachine* stateMP, float* gapP, float* tokenP, PlayableCharacter* playerP, Boss* bossP, int* currentPhaseP)
+{
+	stateMP->setCurrentState(saveP->initState);
+	*gapP = saveP->gap;
+	*tokenP = saveP->token;
+	*playerP = saveP->player;
+	*bossP = saveP->boss;
+	*currentPhaseP = saveP->currentPhase;
 }
