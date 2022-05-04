@@ -15,8 +15,10 @@ public:
 	const std::string getName() { return name; }
 	const float getHealth() { return health; }
 	const Character* getTarget() { return target; }
+	const bool getDeathStatus() { return isDead; }
 
 	void hurt(float damageP);
+	void kill() { isDead = true; }
 
 protected:
 	std::string name{ "" };
@@ -26,4 +28,6 @@ protected:
 
 	Character* target{ nullptr };
 	float* gap{ nullptr };
+
+	bool isDead{ false };
 };

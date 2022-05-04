@@ -23,7 +23,7 @@ float token = 0.0f;
 Weapon grandeHacheDouble{"Grande hache double", 67.f, 5.0f, 1.0f};
 PlayableCharacter player{"Jean Jean", 625.0f, &grandeHacheDouble, &gap, &token};
 
-Boss boss{ "Rydnir", 4000.0f, &gap};
+Boss boss{ "Rydnir", 3400.0f, &gap}; // <--- 4000.0f
 
 // First phase ==========================
 float interRange = 10.0f;
@@ -39,7 +39,7 @@ float thirdPhaseTrigger = 3400.0f; // <--- 800.0f
 //^ Variables ====================================================
 
 int main() {	
-	#pragma region First phase init
+	
 	//================================================================
 	//v PLAYER INIT ==================================================
 	//================================================================
@@ -56,6 +56,7 @@ int main() {
 	//^ PLAYER INIT ==================================================
 	//================================================================
 
+	#pragma region First phase init
 	// ===============================================================
 	//v FIRST PHASE INIT =============================================
 	// ===============================================================
@@ -175,7 +176,7 @@ int main() {
 	interRangeOutActions.push_back(&sword);
 
 	vector<Transition*> interRangeOutTransitions;
-	State interRangeState{ &longRangeOutActions,  &interRangeOutTransitions };
+	State interRangeState{ &interRangeOutActions,  &interRangeOutTransitions };
 
 	// Mid range ============================
 	BossAttack souffleTenebreuxMid = souffleTenebreux;
@@ -188,7 +189,7 @@ int main() {
 	midRangeOutActions.push_back(&explosion);
 
 	vector<Transition*> midRangeOutTransitions;
-	State midRangeThirdState{ &longRangeOutActions,  &midRangeOutTransitions };
+	State midRangeThirdState{ &midRangeOutActions,  &midRangeOutTransitions };
 
 	// Close range ==========================
 	BossAttack griffesClose = griffes;
@@ -297,6 +298,7 @@ int main() {
 			stateM.setCurrentState(midRangeThirdState);
 		}
 
+
 		updateBoss(stateM);
 
 		// Player actions2
@@ -361,12 +363,5 @@ Action* pickBetween(std::vector<Action*> attacksP)
 void updatePlayer() {
 	cout << "\n" << player.getName() << " is " << gap << " steps away from " << boss.getName() << endl;
 
-	// While the player can play
-		// Display current condition
-
-		// Let the player choose between actions
 	player.chooseAction();
-
-	// Do the action
-// 
 }

@@ -29,7 +29,7 @@ void BossAttack::execute()
 		target->hurt(damage);
 	}
 	else {
-		std::cout << " but miss" << std::endl;
+		std::cout << " but misses" << std::endl;
 	}
 
 	target->addTokens(tokenCost);
