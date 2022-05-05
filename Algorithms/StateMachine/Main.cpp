@@ -48,7 +48,7 @@ bool gameEnded = false;
 float gap = 16.0f;
 float token = 0.0f;
 
-Weapon bigDoubleAxe{"Big double axe", 97.f, 5.0f, 1.0f};
+Weapon bigDoubleAxe{"Big double axe", 98.f, 5.0f, 1.0f};
 PlayableCharacter player{"player", 625.0f, &bigDoubleAxe, &gap, &token};
 
 Boss boss{ "Rydnir", 3000.0f, &gap}; // <--- 4000.0f
